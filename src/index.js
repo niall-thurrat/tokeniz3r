@@ -25,8 +25,11 @@ export class Tokenizer {
         return matchingTokens[0]
     }
 
+    getActiveToken() {
+        return this.activeToken
+    }
+
     // TODO:
-    // how do we know where active token is in string? create currentIndex
     // create getActiveToken method
     // create setActiveTokenToNext method to change activeToken
     //     uses: getBestMatch method - loop through grammar rules and decide best match
