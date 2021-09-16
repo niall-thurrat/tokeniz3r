@@ -2,19 +2,16 @@ export class Tokenizer {
     constructor(inputStr, grammar) {
         this.inputStr = inputStr
         this.grammar = grammar
-        this.activeToken = this.getFirstToken()
-        // this.currentIndex = 0
+        this.currentIndex = 0
+        this.activeToken = this.getBestMatch(this.currentIndex) // ensure error thrown here if token not found
     }
 
-    getFirstToken() {
-        return this.getBestMatch()
-    }
-
-    getBestMatch() {
+    getBestMatch(index) {
         let matchingTokens = []
+        const string = this.inputStr.slice(index)
 
         this.grammar.forEach(rule => {
-            const match = this.inputStr.match(rule.regex)
+            const match = string.match(rule.regex)
             if (match !== null) {
                 const token = {
                     type: rule.tokenType,
@@ -29,8 +26,6 @@ export class Tokenizer {
     }
 
     // TODO:
-    // create activeToken property
-    // set activeToken in constructor OR return error
     // how do we know where active token is in string? create currentIndex
     // create getActiveToken method
     // create setActiveTokenToNext method to change activeToken
