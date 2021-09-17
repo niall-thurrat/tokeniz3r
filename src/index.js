@@ -8,10 +8,10 @@ export class Tokenizer {
 
     getBestMatch(index) {
         let matchingTokens = []
-        const string = this.inputStr.slice(index)
+        const strAfterToken = this.inputStr.slice(index) // works for NEXT token specifically
 
         this.grammar.forEach(rule => {
-            const match = string.match(rule.regex)
+            const match = strAfterToken.match(rule.regex)
             if (match !== null) {
                 const token = {
                     type: rule.tokenType,
@@ -29,8 +29,30 @@ export class Tokenizer {
         return this.activeToken
     }
 
+    setActiveTokenToNext() {
+        const nextIndex = this.getNextIndex()
+        this.activeToken = this.getBestMatch(nextIndex)
+        // if match found/no error
+        this.setCurrentIndex(nextIndex)
+    }
+
+    getNextIndex() {
+        const tokenLength = this.activeToken.value.length
+        const spaceCount = this.countSpaces()
+        return this.currentIndex + tokenLength + spaceCount
+    }
+
+    countSpaces() {
+        const strAfterToken = this.inputStr.slice(this.currentIndex)
+        const regex = / /g
+        return ((strAfterToken || '').match(regex) || []).length
+    }
+
+    setCurrentIndex(nextIndex) {
+        this.currentIndex = nextIndex
+    }
+
     // TODO:
-    // create getActiveToken method
     // create setActiveTokenToNext method to change activeToken
     //     uses: getBestMatch method - loop through grammar rules and decide best match
     // create setActiveTokenToPrevious method to change activeToken
