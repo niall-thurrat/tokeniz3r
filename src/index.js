@@ -39,13 +39,16 @@ export class Tokenizer {
     getNextIndex() {
         const tokenLength = this.activeToken.value.length
         const spaceCount = this.countSpaces()
+        
         return this.currentIndex + tokenLength + spaceCount
     }
 
     countSpaces() {
-        const strAfterToken = this.inputStr.slice(this.currentIndex)
-        const regex = / /g
-        return ((strAfterToken || '').match(regex) || []).length
+        const tokenLength = this.activeToken.value.length
+        const newIndex = this.currentIndex + tokenLength
+        const strAfterToken = this.inputStr.slice(newIndex)
+
+        return strAfterToken.indexOf(strAfterToken.trim())
     }
 
     setCurrentIndex(nextIndex) {
