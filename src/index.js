@@ -1,7 +1,9 @@
+import { Grammar } from './Grammar.js'
+
 export class Tokenizer {
     constructor(inputStr, grammar) {
         this.inputStr = inputStr
-        this.grammar = grammar
+        this.grammar = new Grammar(grammar)
         this.currentIndex = 0
         this.activeToken = this.getBestMatch(inputStr, false) // ensure error thrown here if token not found
     }
@@ -44,7 +46,7 @@ export class Tokenizer {
 
     getBestMatch(str, isForPrevious) {
         let matchingTokens = []
-        const rules = isForPrevious ? this.getRulesForPrevTokens() : this.grammar // is it rules you're getting though? more like ruleRegexs/ruleDiscriptions/rulePatterns
+        const rules = isForPrevious ? this.grammar.prevTokenRules : this.grammar.nextTokenRules // is it rules you're getting though? more like ruleRegexs/ruleDiscriptions/rulePatterns
 
         rules.forEach(rule => {
             const match = str.match(rule.regex)
@@ -56,22 +58,6 @@ export class Tokenizer {
         // TODO multiple munch handled here AND? other multiple results
         // TODO handle no matches
         return matchingTokens[0]
-    }
-
-    getRulesForPrevTokens() { // this func will all change with creation of Grammar class
-        const newGrammar = []
-
-        this.grammar.forEach(rule => {
-            let reStr = rule.regex.toString()
-            reStr = reStr.substring(1,reStr.length-1)
-            reStr = reStr.replace(/\^/,'') + '$'
-            const newRule = {
-                tokenType: rule.tokenType,
-                regex: new RegExp(reStr)
-            }
-            newGrammar.push(newRule)
-        })
-        return newGrammar
     }
 
     createToken(type, value) {
