@@ -1,13 +1,13 @@
 import { Tokenizer } from './index.js'
 
-const inputStr = 'wee   test    .   with few words.'
+const inputStr = 'wee test . ye'
 const WordAndDotGrammar = [
     {
-        tokenType: 'word',
+        tokenType: 'WORD',
         regex: /^[\w|åäöÅÄÖ]+/
     },
     { 
-        tokenType: 'dot',
+        tokenType: 'DOT',
         regex: /^\./
     }
 ]

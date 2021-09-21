@@ -12,7 +12,7 @@ export class Tokenizer {
         return this.activeToken
     }
 
-    setActiveTokenToNext() { // is this doing one thing?
+    setActiveTokenToNext() { // is this doing one thing? // THIS MUST FAIL IF LAST TOKEN IS AUTO END TOKEN
         const nextIndex = this.getNextIndex()
         const strAfterToken = this.inputStr.slice(nextIndex)
         this.activeToken = this.getBestMatch(strAfterToken, false)
@@ -20,7 +20,7 @@ export class Tokenizer {
         this.setCurrentIndex(nextIndex)
     }
 
-    setActiveTokenToPrev() { // AS ABOVE - is this doing one thing?
+    setActiveTokenToPrev() { // AS ABOVE - is this doing one thing? THROW ERROR IF FIRST TOKEN
         const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
         // TODO: handle no strBeforeToken
         this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
@@ -87,11 +87,10 @@ export class Tokenizer {
     }
 
     // TODO:
-    // create Grammar class with predefined END rule
-    // instantiate Grammar class in constructor using grammar arg
-    // grammar class uses Rule classes
+    // create END rule in Grammar class
     // create Token class
     // activeToken property becomes a Token instance
+    // test to ensure works with ArithmaticGrammar
     // grammar class handles errors?
     // encapsulation where possible
     // refactor
