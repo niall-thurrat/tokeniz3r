@@ -22,7 +22,7 @@ export class Grammar {
         let prevTokenRules = []
 
         grammar.forEach(rule => {
-            // Transform regex pattern. Example: /^[\w|åäöÅÄÖ]+/ becomes '[\\w|åäöÅÄÖ]+$'
+            // Transform regex pattern. Example: /^[\w|åäöÅÄÖ]+/ becomes '[\w|åäöÅÄÖ]+$'
             let regexStr = rule.regex.toString()
             regexStr = regexStr.substring(1,regexStr.length-1).replace(/\^/,'') + '$'
 

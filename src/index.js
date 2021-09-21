@@ -1,4 +1,5 @@
 import { Grammar } from './Grammar.js'
+import { Token } from './Token.js'
 
 export class Tokenizer {
     constructor(inputStr, grammar) {
@@ -46,25 +47,18 @@ export class Tokenizer {
 
     getBestMatch(str, isForPrevious) {
         let matchingTokens = []
-        const rules = isForPrevious ? this.grammar.prevTokenRules : this.grammar.nextTokenRules // is it rules you're getting though? more like ruleRegexs/ruleDiscriptions/rulePatterns
+        const rules = isForPrevious ? this.grammar.prevTokenRules : this.grammar.nextTokenRules
 
         rules.forEach(rule => {
             const match = str.match(rule.regex)
             if (match !== null) {
-                const token = this.createToken(rule.tokenType, match.toString())
-                matchingTokens.push(token)
+                matchingTokens.push(new Token(rule.tokenType, match.toString()))
             }
         })
-        // TODO multiple munch handled here AND? other multiple results
+        // TODO multiple munch handled here
         // TODO handle no matches
+        // TODO handle multiple matching tokens of same length?
         return matchingTokens[0]
-    }
-
-    createToken(type, value) {
-        return {
-            type: type,
-            value: value
-        }
     }
 
     countTokenTrailingSpaces() { // vague name for a very specific function
@@ -88,12 +82,10 @@ export class Tokenizer {
 
     // TODO:
     // create END rule in Grammar class
-    // create Token class
-    // activeToken property becomes a Token instance
     // test to ensure works with ArithmaticGrammar
-    // grammar class handles errors?
-    // encapsulation where possible
-    // refactor
+    // error handling
+    // encapsulation
+    // refactors
     // use .npmignore to remove unnecessary files when module is imported? Does it work like that??
 
     // match example [ 'return', index: 0, input: 'return me please.', groups: undefined ]
