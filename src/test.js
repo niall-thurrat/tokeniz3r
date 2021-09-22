@@ -1,6 +1,6 @@
 import { Tokenizer } from './index.js'
 
-const inputStr = 'wee test . ye'
+const inputStr = 'wee test     .     '
 const WordAndDotGrammar = [
     {
         tokenType: 'WORD',
@@ -24,10 +24,14 @@ tokenizer.setActiveTokenToNext()
 
 console.log(tokenizer.activeToken)
 
-tokenizer.setActiveTokenToPrev()
+tokenizer.setActiveTokenToNext()
 
 console.log(tokenizer.activeToken)
 
 tokenizer.setActiveTokenToPrev()
 
 console.log(tokenizer.activeToken)
+
+// tokenizer.setActiveTokenToPrev()
+
+// console.log(tokenizer.activeToken)

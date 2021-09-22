@@ -3,7 +3,7 @@ import { Token } from './Token.js'
 
 export class Tokenizer {
     constructor(inputStr, grammar) {
-        this.inputStr = inputStr
+        this.inputStr = inputStr.trim()
         this.grammar = new Grammar(grammar)
         this.currentIndex = 0
         this.activeToken = this.getBestMatch(inputStr, false) // ensure error thrown here if token not found
@@ -13,15 +13,20 @@ export class Tokenizer {
         return this.activeToken
     }
 
-    setActiveTokenToNext() { // is this doing one thing? // THIS MUST FAIL IF LAST TOKEN IS AUTO END TOKEN
-        const nextIndex = this.getNextIndex()
-        const strAfterToken = this.inputStr.slice(nextIndex)
-        this.activeToken = this.getBestMatch(strAfterToken, false)
-        // if match found/no error
-        this.setCurrentIndex(nextIndex)
+    setActiveTokenToNext() { // is this doing one thing? 
+        if (this.activeToken.type === 'END') {
+            // Throw error
+        } else {
+            const nextIndex = this.getNextIndex()
+            const strAfterToken = this.inputStr.slice(nextIndex)
+            this.activeToken = this.getBestMatch(strAfterToken, false)
+            // if match found/no error
+            this.setCurrentIndex(nextIndex)
+        }
     }
 
-    setActiveTokenToPrev() { // AS ABOVE - is this doing one thing? THROW ERROR IF FIRST TOKEN
+    setActiveTokenToPrev() { // AS ABOVE - is this doing one thing?
+        // throw error if (this.currentIndex === 0)
         const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
         // TODO: handle no strBeforeToken
         this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
@@ -32,7 +37,7 @@ export class Tokenizer {
 
     getNextIndex() {
         const activeTokenLength = this.activeToken.value.length
-        const spaceCount = this.countTokenTrailingSpaces()
+        const spaceCount = this.countSpacesAfterToken()
         
         return this.currentIndex + activeTokenLength + spaceCount
     }
@@ -61,7 +66,7 @@ export class Tokenizer {
         return matchingTokens[0]
     }
 
-    countTokenTrailingSpaces() { // vague name for a very specific function
+    countSpacesAfterToken() { // vague name for a very specific function
         const newIndex = this.currentIndex + this.activeToken.value.length
         const strAfterToken = this.inputStr.slice(newIndex)
 
@@ -83,6 +88,7 @@ export class Tokenizer {
     // TODO:
     // create END rule in Grammar class
     // test to ensure works with ArithmaticGrammar
+    // maximal munch
     // error handling
     // encapsulation
     // refactors

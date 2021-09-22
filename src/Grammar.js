@@ -13,7 +13,10 @@ export class Grammar {
         grammar.forEach(rule => {
             rules.push(new Rule(rule.tokenType, rule.regex))
         })
-        // rules.push(new Rule('END', /someRegexHere?/))
+
+        // Rule matches empty string
+        rules.push(new Rule('END', new RegExp(/^(?![\s\S])/)))
+
         return rules
     }
 
