@@ -57,7 +57,7 @@ export class Tokenizer {
         rules.forEach(rule => {
             const match = str.match(rule.regex)
             if (match !== null) {
-                matchingTokens.push(new Token(rule.tokenType, match.toString()))
+                matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
             }
         })
         // TODO multiple munch handled here
@@ -86,7 +86,6 @@ export class Tokenizer {
     }
 
     // TODO:
-    // create END rule in Grammar class
     // test to ensure works with ArithmaticGrammar
     // maximal munch
     // error handling
