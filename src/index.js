@@ -5,8 +5,8 @@ export class Tokenizer {
     constructor(inputStr, grammar) {
         this.inputStr = inputStr.trim()
         this.grammar = new Grammar(grammar)
+        this.activeToken = this.getBestMatch(inputStr, false)
         this.currentIndex = 0
-        this.activeToken = this.getBestMatch(inputStr, false) // ensure error thrown here if token not found
     }
 
     getActiveToken() {
@@ -89,12 +89,8 @@ export class Tokenizer {
     }
 
     // TODO:
-    // maximal munch
     // error handling
     // encapsulation
     // refactors
     // use .npmignore to remove unnecessary files when module is imported? Does it work like that??
-
-    // match example [ 'return', index: 0, input: 'return me please.', groups: undefined ]
-    // console.log(`Tokenizer test string: ${this.inputStr}`)
 }
