@@ -4,7 +4,7 @@ import { Tokenizer } from './index.js'
 // const WordAndDotGrammar = [
 //     {
 //         tokenType: 'WORD',
-//         regex: /^[\w|åäöÅÄÖ]+/
+//         regex: /^[\w|åäöÅÄÖ]+/igm
 //     },
 //     { 
 //         tokenType: 'DOT',
@@ -46,21 +46,21 @@ const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
 console.log(tokenizer.activeToken)
 
-tokenizer.setActiveTokenToNext()
+// tokenizer.setActiveTokenToNext()
 
-console.log(tokenizer.activeToken)
+// console.log(tokenizer.activeToken)
 
-tokenizer.setActiveTokenToNext()
+// tokenizer.setActiveTokenToNext()
 
-console.log(tokenizer.activeToken)
+// console.log(tokenizer.activeToken)
 
-tokenizer.setActiveTokenToNext()
+// tokenizer.setActiveTokenToNext()
 
-console.log(tokenizer.activeToken)
+// console.log(tokenizer.activeToken)
 
-tokenizer.setActiveTokenToPrev()
+// tokenizer.setActiveTokenToPrev()
 
-console.log(tokenizer.activeToken)
+// console.log(tokenizer.activeToken)
 
 // tokenizer.setActiveTokenToPrev()
 

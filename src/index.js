@@ -66,7 +66,7 @@ export class Tokenizer {
         return matchingTokens[0]
     }
 
-    countSpacesAfterToken() { // vague name for a very specific function
+    countSpacesAfterToken() {
         const newIndex = this.currentIndex + this.activeToken.value.length
         const strAfterToken = this.inputStr.slice(newIndex)
 
@@ -74,7 +74,7 @@ export class Tokenizer {
     }
 
     countSpacesAtStartOfStr(str) {
-        return str.indexOf(str.trim()) // This could lead to problems if there is only whitespace after token (returns 0). Could this be an issue? Test?
+        return str.indexOf(str.trim())
     }
 
     reverseStr(str) {
@@ -86,7 +86,6 @@ export class Tokenizer {
     }
 
     // TODO:
-    // test to ensure works with ArithmaticGrammar
     // maximal munch
     // error handling
     // encapsulation

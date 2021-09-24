@@ -25,11 +25,13 @@ export class Grammar {
         let prevTokenRules = []
 
         grammar.forEach(rule => {
-            // Transform regex pattern. Example: /^[\w|åäöÅÄÖ]+/ becomes '[\w|åäöÅÄÖ]+$'
+            // Transform regex pattern. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes '[\\w|åäöÅÄÖ]+$' + 'i'
             let regexStr = rule.regex.toString()
-            regexStr = regexStr.substring(1,regexStr.length-1).replace(/\^/,'') + '$'
-
-            prevTokenRules.push(new Rule(rule.tokenType, new RegExp(regexStr)))
+            const pattern = regexStr.substring(1, regexStr.lastIndexOf("/"))
+            const flags = regexStr.substring(regexStr.lastIndexOf("/") + 1, regexStr.length)
+            const strEndPattern = pattern.replace(/\^/,'') + '$'
+            
+            prevTokenRules.push(new Rule(rule.tokenType, new RegExp(strEndPattern, flags)))
         })
         return prevTokenRules
     }
