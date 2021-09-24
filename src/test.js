@@ -4,7 +4,7 @@ import { Tokenizer } from './index.js'
 // const WordAndDotGrammar = [
 //     {
 //         tokenType: 'WORD',
-//         regex: /^[\w|åäöÅÄÖ]+/igm
+//         regex: /^[\w|åäöÅÄÖ]+/i
 //     },
 //     { 
 //         tokenType: 'DOT',
@@ -30,13 +30,13 @@ import { Tokenizer } from './index.js'
 
 const inputStr = '3.14'
 const MaximalMunchGrammar = [
-    {
-        tokenType: 'FLOAT',
-        regex: /^[0-9]+\.[0-9]+/
-    },
     { 
         tokenType: 'INTEGER',
         regex: /^[0-9]+/
+    },
+    {
+        tokenType: 'FLOAT',
+        regex: /^[0-9]+\.[0-9]+/
     }
 ]
 
@@ -46,9 +46,9 @@ const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
 console.log(tokenizer.activeToken)
 
-// tokenizer.setActiveTokenToNext()
+tokenizer.setActiveTokenToNext()
 
-// console.log(tokenizer.activeToken)
+console.log(tokenizer.activeToken)
 
 // tokenizer.setActiveTokenToNext()
 

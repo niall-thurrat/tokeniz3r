@@ -60,10 +60,13 @@ export class Tokenizer {
                 matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
             }
         })
-        // TODO multiple munch handled here
         // TODO handle no matches
-        // TODO handle multiple matching tokens of same length?
-        return matchingTokens[0]
+        // TODO handle multiple matching tokens of same length
+        return (matchingTokens.length > 1) ? this.applyMaximalMunch(matchingTokens)[0] : matchingTokens[0]
+    }
+
+    applyMaximalMunch(tokens) {
+        return tokens.sort((a, b) => b.value.length - a.value.length)
     }
 
     countSpacesAfterToken() {
