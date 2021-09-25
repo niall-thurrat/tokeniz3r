@@ -1,6 +1,6 @@
 import { Tokenizer } from './index.js'
 
-const inputStr = ' '
+const inputStr = 'bla'
 const WordAndDotGrammar = [
     {
         tokenType: 'WORD',
@@ -45,6 +45,9 @@ const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 // const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
 console.log(tokenizer.activeToken)
+
+tokenizer.setActiveTokenToPrev()
+
 
 // tokenizer.setActiveTokenToNext()
 
