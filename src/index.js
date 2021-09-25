@@ -15,39 +15,27 @@ export class Tokenizer {
     }
 
     setActiveTokenToNext() { // is this doing one thing? 
-        try {
-            if (this.activeToken.type === 'END') {
-                throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
-            } else {
-                const nextIndex = this.getNextIndex()
-                const strAfterToken = this.inputStr.slice(nextIndex)
-                this.activeToken = this.getBestMatch(strAfterToken, false)
-                // if match found/no error
-                this.setCurrentIndex(nextIndex)
-            }
-        } catch (err) {
-            if (err instanceof MethodCallError) {
-                console.error(err)
-            } else throw err
+        if (this.activeToken.type === 'END') {
+            throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
+        } else {
+            const nextIndex = this.getNextIndex()
+            const strAfterToken = this.inputStr.slice(nextIndex)
+            this.activeToken = this.getBestMatch(strAfterToken, false)
+            // if match found/no error
+            this.setCurrentIndex(nextIndex)
         }
     }
 
     setActiveTokenToPrev() { // AS ABOVE - is this doing one thing?
-        try {
-            if (this.currentIndex === 0) {
-                throw new MethodCallError('setActiveTokenToPrev should not be called when first token is active')
-            } else {
-                const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
-            // TODO: handle no strBeforeToken
-            this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
-            // if match found/no error
-            const prevIndex = this.getPrevIndex(strBeforeToken, this.activeToken.value.length)
-            this.setCurrentIndex(prevIndex)
-            }
-        } catch (err) {
-            if (err instanceof MethodCallError) {
-                console.error(err)
-            } else throw err
+        if (this.currentIndex === 0) {
+            throw new MethodCallError('setActiveTokenToPrev should not be called when first token is active')
+        } else {
+            const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
+        // TODO: handle no strBeforeToken
+        this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
+        // if match found/no error
+        const prevIndex = this.getPrevIndex(strBeforeToken, this.activeToken.value.length)
+        this.setCurrentIndex(prevIndex)
         }
     }
 

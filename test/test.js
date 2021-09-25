@@ -1,5 +1,6 @@
-import { expect } from "chai"
-import { Tokenizer } from "../src/index.js"
+import { expect } from 'chai'
+import { Tokenizer } from '../src/index.js'
+import MethodCallError from '../src/exceptions/MethodCallError.js'
 
 describe("WordAndDotGrammar", () => {
     const WordAndDotGrammar = [
@@ -122,19 +123,17 @@ describe("WordAndDotGrammar", () => {
         })
     })
 
-    // describe("TC10_Get???Exception_Sequence[<]", () => {
-    //     it('should be ??? Error', () => {
-    //         const inputStr = 'a'
-    //         const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+    describe("TC10_GetException_Sequence[<]", () => {
+        it('should be MethodCallError', () => {
+            const inputStr = 'a'
+            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar) 
 
-    //         tokenizer.setActiveTokenToPrev() // How does this pick up exception?? try catch block?
-    //         // const token = tokenizer.getActiveToken()
+            expect(tokenizer.setActiveTokenToPrev.bind(tokenizer)).to.throw(MethodCallError,
+                'setActiveTokenToPrev should not be called when first token is active')
+        })
+    })
 
-    //         expect(token.type).to.equal('END')
-    //     })
-    // })
-
-    // describe("TC11_Get???Exception_Sequence[]", () => {
+    // describe("TC11_GetException_Sequence[]", () => {
     //     it('should be ??? Error', () => {
     //         const inputStr = '!'
     //         const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
