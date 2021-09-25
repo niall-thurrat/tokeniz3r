@@ -15,7 +15,7 @@ export class Grammar {
         })
 
         // Rule matches empty string
-        rules.push(new Rule('END', new RegExp(/^(?![\s\S])/)))
+        rules.push(new Rule('END', new RegExp(/^\s*$/)))
 
         return rules
     }
