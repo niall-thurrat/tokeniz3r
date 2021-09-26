@@ -14,24 +14,22 @@ export class Grammar {
             rules.push(new Rule(rule.tokenType, rule.regex))
         })
 
-        // Rule matches empty string
+        // END rule matches empty string
         rules.push(new Rule('END', new RegExp(/^\s*$/)))
 
         return rules
     }
 
     setPrevTokenRules(grammar) {
-        // TODO: throw error if moving before first token
         let prevTokenRules = []
 
         grammar.forEach(rule => {
-            // Transform regex pattern. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes '[\\w|åäöÅÄÖ]+$' + 'i'
-            let regexStr = rule.regex.toString()
-            const pattern = regexStr.substring(1, regexStr.lastIndexOf("/"))
+            // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
+            const regexStr = rule.regex.toString()
+            const pattern = regexStr.substring(1, regexStr.lastIndexOf("/")).replace(/\^/,'') + '$'
             const flags = regexStr.substring(regexStr.lastIndexOf("/") + 1, regexStr.length)
-            const strEndPattern = pattern.replace(/\^/,'') + '$'
             
-            prevTokenRules.push(new Rule(rule.tokenType, new RegExp(strEndPattern, flags)))
+            prevTokenRules.push(new Rule(rule.tokenType, new RegExp(pattern, flags)))
         })
         return prevTokenRules
     }

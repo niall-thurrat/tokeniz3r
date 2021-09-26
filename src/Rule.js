@@ -3,6 +3,4 @@ export class Rule {
       this.tokenType = tokenType
       this.regex = regex
     }
-
-    // validate regex here?
 }
