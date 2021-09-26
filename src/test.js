@@ -1,6 +1,6 @@
 import { Tokenizer } from './index.js'
 
-const inputStr = 'bla'
+const inputStr = '!'
 const WordAndDotGrammar = [
     {
         tokenType: 'WORD',

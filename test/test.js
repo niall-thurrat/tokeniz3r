@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import { Tokenizer } from '../src/index.js'
 import MethodCallError from '../src/exceptions/MethodCallError.js'
+import LexicalError from '../src/exceptions/LexicalError.js'
 
 describe("WordAndDotGrammar", () => {
     const WordAndDotGrammar = [
@@ -128,21 +129,17 @@ describe("WordAndDotGrammar", () => {
             const inputStr = 'a'
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar) 
 
-            expect(tokenizer.setActiveTokenToPrev.bind(tokenizer)).to.throw(MethodCallError,
-                'setActiveTokenToPrev should not be called when first token is active')
+            expect(tokenizer.setActiveTokenToPrev.bind(tokenizer)).to.throw(MethodCallError)
         })
     })
 
-    // describe("TC11_GetException_Sequence[]", () => {
-    //     it('should be ??? Error', () => {
-    //         const inputStr = '!'
-    //         const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+    describe("TC11_GetException_Sequence[]", () => {
+        it('should be LexicalError', () => {
+            const inputStr = '!'
 
-    //         const token = tokenizer.getActiveToken()
-
-    //         expect(token.type).to.equal('END')
-    //     })
-    // })
+            expect(() => new Tokenizer(inputStr, WordAndDotGrammar)).to.throw(LexicalError)
+        })
+    })
 })
 
 describe("ArithmeticGrammar", () => {
@@ -197,19 +194,17 @@ describe("ArithmeticGrammar", () => {
         })
     })
 
-    // describe("TC15_Get???Exception_Sequence[>>>]", () => {
-    //     it('should be ??? Error', () => {
-    //         const inputStr = '3+5 # 4'
-    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    describe("TC15_GetException_Sequence[>>>]", () => {
+        it('should be LexicalError', () => {
+            const inputStr = '3+5 # 4'
+            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
-    //         tokenizer.setActiveTokenToNext()
-    //         tokenizer.setActiveTokenToNext()
-    //         tokenizer.setActiveTokenToNext()    
-    //         const token = tokenizer.getActiveToken()
+            tokenizer.setActiveTokenToNext()
+            tokenizer.setActiveTokenToNext()
 
-    //         expect(`${token.type}("${token.value}")`).to.equal('Exception')
-    //     })
-    // })
+            expect(tokenizer.setActiveTokenToNext.bind(tokenizer)).to.throw(LexicalError)
+        })
+    })
 
     describe("TC16_GetAddToken_Sequence[><>>>]", () => {
         it('should be ADD("+")', () => {

@@ -1,6 +1,7 @@
 import { Grammar } from './Grammar.js'
 import { Token } from './Token.js'
 import MethodCallError from './exceptions/MethodCallError.js'
+import LexicalError from './exceptions/LexicalError.js'
 
 export class Tokenizer {
     constructor(inputStr, grammar) {
@@ -14,7 +15,7 @@ export class Tokenizer {
         return this.activeToken
     }
 
-    setActiveTokenToNext() { // is this doing one thing? 
+    setActiveTokenToNext() {
         if (this.activeToken.type === 'END') {
             throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
         } else {
@@ -26,7 +27,7 @@ export class Tokenizer {
         }
     }
 
-    setActiveTokenToPrev() { // AS ABOVE - is this doing one thing?
+    setActiveTokenToPrev() {
         if (this.currentIndex === 0) {
             throw new MethodCallError('setActiveTokenToPrev should not be called when first token is active')
         } else {
@@ -64,13 +65,21 @@ export class Tokenizer {
                 matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
             }
         })
-        // TODO handle no matches
+        
+        if (matchingTokens.length === 0) {
+            throw new LexicalError(`No grammar rule matches string \'${this.limitStrTo10Chars(str)}\'`)
+        }
+
         // TODO handle multiple matching tokens of same length
         return (matchingTokens.length > 1) ? this.applyMaximalMunch(matchingTokens)[0] : matchingTokens[0]
     }
 
     applyMaximalMunch(tokens) {
         return tokens.sort((a, b) => b.value.length - a.value.length)
+    }
+
+    limitStrTo10Chars(str) {
+        return (str.length > 10) ? `${str.slice(0, 11)}...` : str
     }
 
     countSpacesAfterToken() {
