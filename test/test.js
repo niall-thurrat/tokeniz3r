@@ -155,6 +155,22 @@ describe("ArithmeticGrammar", () => {
         { 
             tokenType: 'MUL',
             regex: /^[*]/
+        },
+        { 
+            tokenType: 'LEFT_PARENTHESIS',
+            regex: /^[(]/
+        },
+        { 
+            tokenType: 'RIGHT_PARENTHESIS',
+            regex: /^[)]/
+        },
+        { 
+            tokenType: 'DIV',
+            regex: /^[/]/
+        },
+        { 
+            tokenType: 'SUBTRACT',
+            regex: /^[-]/
         }
     ]
 
@@ -221,6 +237,58 @@ describe("ArithmeticGrammar", () => {
             expect(`${token.type}("${token.value}")`).to.equal('ADD("+")')
         })
     })
+
+    describe("TC17_GetLeftParenthesisToken_Sequence[>>]", () => {
+        it('should be LEFT_PARENTHESIS("(")', () => {
+            const inputStr = '3.0 + (5 * 4)'
+            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+
+            tokenizer.setActiveTokenToNext()
+            tokenizer.setActiveTokenToNext()
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('LEFT_PARENTHESIS("(")')
+        })
+    })
+
+    describe("TC18_GetRightParenthesisToken_Sequence[>>>>]", () => {
+        it('should be RIGHT_PARENTHESIS(")")', () => {
+            const inputStr = '(5 * 4) / 2'
+            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+
+            tokenizer.setActiveTokenToNext()
+            tokenizer.setActiveTokenToNext()
+            tokenizer.setActiveTokenToNext()
+            tokenizer.setActiveTokenToNext()
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('RIGHT_PARENTHESIS(")")')
+        })
+    })
+
+    describe("TC19_GetDivisionToken_Sequence[>]", () => {
+        it('should be DIV("/")', () => {
+            const inputStr = '2 / 2'
+            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+
+            tokenizer.setActiveTokenToNext()
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('DIV("/")')
+        })
+    })
+
+    describe("TC20_GetSubtractionToken_Sequence[>]", () => {
+        it('should be SUBTRACT("-")', () => {
+            const inputStr = '7-4'
+            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+
+            tokenizer.setActiveTokenToNext()
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('SUBTRACT("-")')
+        })
+    })
 })
 
 describe("MaximalMunchGrammar", () => {
@@ -246,8 +314,7 @@ describe("MaximalMunchGrammar", () => {
         }
     ]
 
-
-    describe("TC17_GetFloatTokenUsingMaxMunch_Sequence[]", () => {
+    describe("TC21_GetFloatTokenUsingMaxMunch_Sequence[]", () => {
         it('should be FLOAT("3.14")', () => {
             const inputStr = '3.14'
             const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
@@ -258,7 +325,7 @@ describe("MaximalMunchGrammar", () => {
         })
     })
 
-    describe("TC18_GetExceptionForSameLengthMatchingTokens_Sequence[]", () => {
+    describe("TC22_GetExceptionForSameLengthMatchingTokens_Sequence[]", () => {
         it('should be LexicalError', () => {
             const inputStr = '3.14'
 
