@@ -35,7 +35,7 @@ const MaximalMunchGrammar = [
         regex: /^[0-9]+/
     },
     {
-        tokenType: 'FLOAT',
+        tokenType: 34,
         regex: /^[0-9]+\.[0-9]+/
     }
 ]
