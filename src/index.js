@@ -22,7 +22,6 @@ export class Tokenizer {
             const nextIndex = this.getNextIndex()
             const strAfterToken = this.inputStr.slice(nextIndex)
             this.activeToken = this.getBestMatch(strAfterToken, false)
-            // if match found/no error
             this.setCurrentIndex(nextIndex)
         }
     }
@@ -32,11 +31,9 @@ export class Tokenizer {
             throw new MethodCallError('setActiveTokenToPrev should not be called when first token is active')
         } else {
             const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
-        // TODO: handle no strBeforeToken
-        this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
-        // if match found/no error
-        const prevIndex = this.getPrevIndex(strBeforeToken, this.activeToken.value.length)
-        this.setCurrentIndex(prevIndex)
+            this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
+            const prevIndex = this.getPrevIndex(strBeforeToken, this.activeToken.value.length)
+            this.setCurrentIndex(prevIndex)
         }
     }
 
@@ -70,16 +67,22 @@ export class Tokenizer {
             throw new LexicalError(`No grammar rule matches string \'${this.limitStrTo10Chars(str)}\'`)
         }
 
-        // TODO handle multiple matching tokens of same length
         return (matchingTokens.length > 1) ? this.applyMaximalMunch(matchingTokens)[0] : matchingTokens[0]
     }
 
     applyMaximalMunch(tokens) {
-        return tokens.sort((a, b) => b.value.length - a.value.length)
+        tokens.sort((a, b) => b.value.length - a.value.length)
+
+        if (tokens[0].value.length === tokens[1].value.length) {
+            const token1 = `${tokens[0].type}("${tokens[0].value}")`
+            const token2 = `${tokens[1].type}("${tokens[1].value}")`
+            throw new LexicalError(`Maximal munch cannot be applied to tokens \'${token1}\' and \'${token2}\'`)
+        }
+        return tokens
     }
 
     limitStrTo10Chars(str) {
-        return (str.length > 10) ? `${str.slice(0, 11)}...` : str
+        return (str.length > 10) ? `${str.slice(0, 10)}...` : str
     }
 
     countSpacesAfterToken() {

@@ -222,3 +222,47 @@ describe("ArithmeticGrammar", () => {
         })
     })
 })
+
+describe("MaximalMunchGrammar", () => {
+    const MaximalMunchGrammar = [
+        {
+            tokenType: 'FLOAT',
+            regex: /^[0-9]+\.[0-9]+/
+        },
+        { 
+            tokenType: 'INTEGER',
+            regex: /^[0-9]+/ 
+        }
+    ]
+
+    const FailingMaximalMunchGrammar  = [
+        {
+            tokenType: 'FLOAT',
+            regex: /^[0-9]+\.[0-9]+/
+        },
+        { 
+            tokenType: 'DUPLICATE_FLOAT',
+            regex: /^[0-9]+\.[0-9]+/
+        }
+    ]
+
+
+    describe("TC17_GetFloatTokenUsingMaxMunch_Sequence[]", () => {
+        it('should be FLOAT("3.14")', () => {
+            const inputStr = '3.14'
+            const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
+
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('FLOAT("3.14")')
+        })
+    })
+
+    describe("TC18_GetExceptionForSameLengthMatchingTokens_Sequence[]", () => {
+        it('should be LexicalError', () => {
+            const inputStr = '3.14'
+
+            expect(() => new Tokenizer(inputStr, FailingMaximalMunchGrammar)).to.throw(LexicalError)
+        })
+    })
+})
