@@ -7,7 +7,7 @@ export default class Tokenizer {
     constructor(inputStr, grammar) {
         this.inputStr = inputStr.trim()
         this.grammar = new Grammar(grammar)
-        this.activeToken = this.getBestMatchingToken(inputStr, false)
+        this.activeToken = this.getBestMatchingToken(this.inputStr, false)
         this.currentIndex = 0
     }
 

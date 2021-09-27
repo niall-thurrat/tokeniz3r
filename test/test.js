@@ -3,6 +3,15 @@ import Tokenizer from '../src/index.js'
 import MethodCallError from '../src/exceptions/MethodCallError.js'
 import LexicalError from '../src/exceptions/LexicalError.js'
 
+const sequenceFuncCaller = (sequenceStr, func1, func2) => {
+    const sequenceArr = sequenceStr.split('')
+
+    sequenceArr.forEach(seq => {
+        if (seq === '>') func1()
+        else if (seq === '<') func2()
+    })
+}
+
 describe("WordAndDotGrammar", () => {
     const WordAndDotGrammar = [
         {
@@ -54,9 +63,9 @@ describe("WordAndDotGrammar", () => {
         it('should be WORD("b")', () => {
             const inputStr = 'a.b'
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
@@ -67,9 +76,9 @@ describe("WordAndDotGrammar", () => {
         it('should be WORD("b")', () => {
             const inputStr = 'aa. b'
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
@@ -80,10 +89,10 @@ describe("WordAndDotGrammar", () => {
         it('should be DOT(".")', () => {
             const inputStr = 'a .b'
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
+            const setPrev = () => tokenizer.setActiveTokenToPrevious()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToPrevious()
+            sequenceFuncCaller('>><', setNext, setPrev)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
@@ -200,10 +209,9 @@ describe("ArithmeticGrammar", () => {
         it('should be MUL("*")', () => {
             const inputStr = '3 + 54 * 4'
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>>', setNext)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('MUL("*")')
@@ -214,9 +222,9 @@ describe("ArithmeticGrammar", () => {
         it('should be LexicalError', () => {
             const inputStr = '3+5 # 4'
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>', setNext)
 
             expect(tokenizer.setActiveTokenToNext.bind(tokenizer)).to.throw(LexicalError)
         })
@@ -226,12 +234,10 @@ describe("ArithmeticGrammar", () => {
         it('should be ADD("+")', () => {
             const inputStr = '3.0+54.1     + 4.2'
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
+            const setPrev = () => tokenizer.setActiveTokenToPrevious()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToPrevious()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('><>>>', setNext, setPrev)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('ADD("+")')
@@ -242,9 +248,9 @@ describe("ArithmeticGrammar", () => {
         it('should be LEFT_PARENTHESIS("(")', () => {
             const inputStr = '3.0 + (5 * 4)'
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('LEFT_PARENTHESIS("(")')
@@ -255,11 +261,9 @@ describe("ArithmeticGrammar", () => {
         it('should be RIGHT_PARENTHESIS(")")', () => {
             const inputStr = '(5 * 4) / 2'
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+            const setNext = () => tokenizer.setActiveTokenToNext()
 
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToNext()
+            sequenceFuncCaller('>>>>', setNext)
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('RIGHT_PARENTHESIS(")")')
@@ -330,6 +334,47 @@ describe("MaximalMunchGrammar", () => {
             const inputStr = '3.14'
 
             expect(() => new Tokenizer(inputStr, FailingMaximalMunchGrammar)).to.throw(LexicalError)
+        })
+    })
+})
+
+describe("WordAndDotGrammar", () => {
+    const WordAndDotGrammar = [
+        {
+            tokenType: 'WORD',
+            regex: /^[\w|åäöÅÄÖ]+/
+        },
+        { 
+            tokenType: 'DOT',
+            regex: /^\./
+        }
+    ]
+
+    describe("TC23_EdgeCase_GetStartingTokenWhenInputStrHasTrailingSpace_Sequence[>>>>><<<<<]", () => {
+        it('should be WORD("aaaaa")', () => {
+            const inputStr = 'aaaaa bbbb ccc dd e '
+            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+            const getNext = () => tokenizer.setActiveTokenToNext()
+            const getPrev = () => tokenizer.setActiveTokenToPrevious()
+
+            sequenceFuncCaller('>>>>><<<<<', getNext, getPrev)
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('WORD("aaaaa")')
+        })
+    })
+
+    describe("TC24_EdgeCase_GetStartingTokenWhenInputStrHasLeadingSpace_Sequence[>><<]", () => {
+        it('should be WORD("a")', () => {
+            const inputStr = '    a b'
+            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+            const getNext = () => tokenizer.setActiveTokenToNext()
+            const getPrev = () => tokenizer.setActiveTokenToPrevious()
+
+            sequenceFuncCaller('>><<', getNext, getPrev)
+            const token = tokenizer.getActiveToken()
+
+            expect(`${token.type}("${token.value}")`).to.equal('WORD("a")')
         })
     })
 })
