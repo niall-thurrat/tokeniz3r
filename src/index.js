@@ -31,7 +31,7 @@ export default class Tokenizer {
             throw new MethodCallError('setActiveTokenToPrevious should not be called when first token is active')
         } else {
             const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
-            this.activeToken = this.getBestMatchingToken(strBeforeToken.trim(), true) // move trim into getBestMatching?
+            this.activeToken = this.getBestMatchingToken(strBeforeToken, true)
             const prevIndex = this.getPreviousIndex(strBeforeToken, this.activeToken.value.length)
             this.setCurrentIndex(prevIndex)
         }
@@ -62,7 +62,7 @@ export default class Tokenizer {
         const rules = isForPrevious ? this.grammar.previousTokenRules : this.grammar.nextTokenRules
 
         rules.forEach(rule => {
-            const match = str.match(rule.regex)
+            const match = str.trim().match(rule.regex)
             if (match !== null) {
                 matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
             }
