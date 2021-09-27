@@ -52,7 +52,7 @@ export default class Tokenizer {
     }
 
     getPreviousIndex(strBeforeToken, prevTokenLength) {
-        const preceedingSpaceCount = strBeforeToken.match(/\s*$/).length
+        const preceedingSpaceCount = strBeforeToken.match(/(\s*)$/)[1].length
 
         return this.currentIndex - preceedingSpaceCount - prevTokenLength
     }
