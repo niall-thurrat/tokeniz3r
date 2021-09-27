@@ -2,14 +2,14 @@ import Tokenizer from './index.js'
 
 const inputStr = 'aaaaa bbbb ccc dd e'
 const WordAndDotGrammar = [
-    {
-        tokenType: 'WORD',
-        regex: /^[\w|åäöÅÄÖ]+/i
-    },
-    { 
-        tokenType: 'DOT',
-        regex: /^\./
-    }
+  {
+    tokenType: 'WORD',
+    regex: /^[\w|åäöÅÄÖ]+/i
+  },
+  {
+    tokenType: 'DOT',
+    regex: /^\./
+  }
 ]
 
 // const inputStr = '4.1 * 2.5'
@@ -18,11 +18,11 @@ const WordAndDotGrammar = [
 //         tokenType: 'NUMBER',
 //         regex: /^[0-9]+(\.([0-9])+)?/
 //     },
-//     { 
+//     {
 //         tokenType: 'ADD',
 //         regex: /^[+]/
 //     },
-//     { 
+//     {
 //         tokenType: 'MUL',
 //         regex: /^[*]/
 //     }
@@ -30,7 +30,7 @@ const WordAndDotGrammar = [
 
 // const inputStr = '3.14'
 // const MaximalMunchGrammar = [
-//     { 
+//     {
 //         tokenType: 'INTEGER',
 //         regex: /^[0-9]+/
 //     },
