@@ -1,86 +1,72 @@
-# Release
+# Template for submission laboratory 1, 1dv610
 
-<!--
-In this file, you indicate the status of your assignment by filling in the required text, dates and so on. 
+## Checklist
+  - [✅*] In my tokenizer there are no token types or reg-exp. These are in my test project because they are created by the user. 
+  - [✅] I have written all the code and reflections myself. I have not used other people's code to solve the task.
+  - [✅] My test results are written based on testing performed (and not theoretically, it should work :))
+  - [✅] The only static methods or functions outside of classes that I have are to start my test application ex main (java).
+  - [✅] The only libraries and ready-made classes used are those that must be used (or used to test the module).
 
-You may write in {Swedish or English} and you are free to remove the comments if you like.
--->
+*  The END token (incl. regexp) is created in my app. This had to be done to manage handling the token in a controlled way.
 
-## Release status
+## Self-assessment and goals
+  - [ ] I'm not done because I know I'm missing something. Then do not submit!
+  - [ ] I strive with this submission approved grade (E-D)
+    - [✅] Most test cases work
+    - [✅] The code is ready for reuse
+    - [✅] All code and history are in git
+    - [✅] The code quality requirements are met
+    - [ ] Reflection is written
+  - [ ] With this submission, I strive for higher grades (C-B) and consider myself to meet all the additional requirements for this.
+    - [✅] All test cases are written
+    - [ ] Own test cases for Maximum munch and edge cases
+    - [✅] Test cases are automated
+    - [ ] There is a clear description of how to use the module (in git)
+    - [ ] The code quality requirements are varied
+  - [✅] I strive for the highest grade (A) with this submission
 
-<!-- 
-To tell the examiner that your application is ready to be assessed, you must make a release by checking all the checkboxes below. 
-You check a checkbox by adding an "x" in the parentheses. 
--->
+Clarification: The examiner will give grades regardless of what you think.
 
-- [x]  I have started working on the assignment.
-- [ ]  All required functional requirements are fulfilled. (see below)
-- [ ]  All required non-functional requirements are fulfilled. (see below)
-- [ ]  I have completed the assignment report (see below).
+## Reuse
+Describe how you adapted your code and instructions for another programmer to use your tokenizer. If you have written instructions for your user link to these. If not, describe here what someone should do to use your code with their own grammar.
 
----
+## Description of my code
+Describe your code at a high level of abstraction. A brief description of your most important classes and methods. Feel free to create a class diagram as an image.
 
-- [ ]  I intend to submit the assignment and at the same time I guarantee that I am the one who created the code that is submitted. In cases where I use external libraries or borrowed code from other sources, the source is clearly stated.
-(_Jag avser göra en inlämning av uppgiften och jag garanterar samtidigt att jag är den som skapat koden som lämnas in. I de fall jag använder externa bibliotek eller har lånat kod från andra källor så är källan tydligt angiven._)
+## How I tested
+Describe how you came to the conclusion that your code works.
 
----
+### Test cases
+List the individual test cases. **Bold** things that you have filled in yourself. One line per test case.
 
-## Requirement fulfillment
+| Name      | Grammar | String | Sequence | Expected Active Token | PASS/FAIL |
+| --------- | --------- | ------ | ------- | ------------ | --------- |
+|           |           |        |         |              | ✅       |
 
-<!-- Make sure that you have closed Issues that are required. If not, please comment below. -->
+You can comment if your tokenizer differs slightly from the default.
 
-### Functional Requirements
+### Test cases for higher grade
 
-| Issue ID   | Required | Comment              |
-|------------|----------|----------------------|
-| #1         | ✅       |                      |
-| #2         | ✅       |                      |
-| #3         | ✅       |                      |
-| #4         | ✅       |                      |
-| #5         | ✅       |                      |
-| #6         | ✅       |                      | 
-| #7         | ✅       |                      | 
-| #8         | ✅       |                      |
-| #9         | ✅       |                      |
-| #14        | ✅       |                      |
+List the individual test cases. One row per test case.
+| Name      | Grammar | String | Sequence | Expected Active Token | PASS/FAIL |
+| --------- | --------- | ------ | ------- | ------------ | --------- |
+|           |           |        |         |              | ✅        |
 
-### Non Functional Requirements
+## Code quality requirements
 
-| Issue ID   | Required | Comment              |
-|------------|----------|----------------------|
-| #10        | ✅       |                      |
-| #11        | ✅       |                      |
-| #12        |          |                      |
-| #13        | ✅       |                      |
+**Bold** the "rules" used from CC. You can deviate from table format if you want. Create direct links to your code where appropriate.
 
-### Student defined requirements
+### Naming
 
-<!-- 
-    If you have created your own requirements and added them as issues, reference them below. 
-    Remove this section if not needed.
--->
+| Name and explanation  | Reflection                                   |
+| -------------------  | ---------------------------------------------|
+|                      |                                              |
 
-| Issue ID   | Comment              |
-|------------|----------------------|
-| #X         |                      |
+### Funktioner
 
-## Assignment report
+| Method name and explanation (no. lines excl. ws)  |                                  |
+| -------------------  | ---------------------------------------------|
+|                      |                                              |
 
-<!-- In the assignment report, you reflect on your assignment. -->
-
-### Reflection
-
-<!-- Your own thoughts on the assignment. What was hard, what have you learned? What could you have done differently? -->
-
-
-### Further improvments
-
-<!-- Further improvements of the assignment. What could you have done, but did not have the time to complete? -->
-
-### Extras
-
-<!-- Have you done anything more than the requirements? Preferably, add each extra requirement as an issue and reference it here using # followed by the issue id. -->
-
-### Feedback
-
-<!-- Feedback to the course management about the assignment. -->
+## Laboratory reflection
+Reflect on the task from a code quality perspective. Use concepts from the book.
