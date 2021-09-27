@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Tokenizer } from '../src/index.js'
+import Tokenizer from '../src/index.js'
 import MethodCallError from '../src/exceptions/MethodCallError.js'
 import LexicalError from '../src/exceptions/LexicalError.js'
 
@@ -83,7 +83,7 @@ describe("WordAndDotGrammar", () => {
 
             tokenizer.setActiveTokenToNext()
             tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToPrev()
+            tokenizer.setActiveTokenToPrevious()
             const token = tokenizer.getActiveToken()
 
             expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
@@ -129,7 +129,7 @@ describe("WordAndDotGrammar", () => {
             const inputStr = 'a'
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar) 
 
-            expect(tokenizer.setActiveTokenToPrev.bind(tokenizer)).to.throw(MethodCallError)
+            expect(tokenizer.setActiveTokenToPrevious.bind(tokenizer)).to.throw(MethodCallError)
         })
     })
 
@@ -228,7 +228,7 @@ describe("ArithmeticGrammar", () => {
             const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
             tokenizer.setActiveTokenToNext()
-            tokenizer.setActiveTokenToPrev()
+            tokenizer.setActiveTokenToPrevious()
             tokenizer.setActiveTokenToNext()
             tokenizer.setActiveTokenToNext()
             tokenizer.setActiveTokenToNext()

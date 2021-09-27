@@ -1,4 +1,4 @@
-import { Tokenizer } from './index.js'
+import Tokenizer from './index.js'
 
 // const inputStr = '!bla bla happy happy cut me off!!!'
 // const WordAndDotGrammar = [
@@ -58,10 +58,10 @@ console.log(tokenizer.activeToken)
 
 // console.log(tokenizer.activeToken)
 
-// tokenizer.setActiveTokenToPrev()
+// tokenizer.setActiveTokenToPrevious()
 
 // console.log(tokenizer.activeToken)
 
-// tokenizer.setActiveTokenToPrev()
+// tokenizer.setActiveTokenToPrevious()
 
 // console.log(tokenizer.activeToken)

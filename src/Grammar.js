@@ -1,10 +1,10 @@
-import { Rule } from './Rule.js'
+import Rule from './Rule.js'
 import GrammarValidationError from './exceptions/GrammarValidationError.js'
 
-export class Grammar {
+export default class Grammar {
     constructor(grammar) {
       this.nextTokenRules = this.setNextTokenRules(grammar)
-      this.prevTokenRules = this.setPrevTokenRules(grammar)
+      this.previousTokenRules = this.setPreviousTokenRules(grammar)
     }
 
     setNextTokenRules(grammar) {
@@ -20,7 +20,7 @@ export class Grammar {
         return rules
     }
 
-    setPrevTokenRules(grammar) {
+    setPreviousTokenRules(grammar) {
         let prevTokenRules = []
 
         grammar.forEach(rule => {
