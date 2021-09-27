@@ -7,7 +7,7 @@ export default class Tokenizer {
     constructor(inputStr, grammar) {
         this.inputStr = inputStr.trim()
         this.grammar = new Grammar(grammar)
-        this.activeToken = this.getBestMatch(inputStr, false)
+        this.activeToken = this.getBestMatchingToken(inputStr, false)
         this.currentIndex = 0
     }
 
@@ -21,7 +21,7 @@ export default class Tokenizer {
         } else {
             const nextIndex = this.getNextIndex()
             const strAfterToken = this.inputStr.slice(nextIndex)
-            this.activeToken = this.getBestMatch(strAfterToken, false)
+            this.activeToken = this.getBestMatchingToken(strAfterToken, false)
             this.setCurrentIndex(nextIndex)
         }
     }
@@ -31,7 +31,7 @@ export default class Tokenizer {
             throw new MethodCallError('setActiveTokenToPrevious should not be called when first token is active')
         } else {
             const strBeforeToken = this.inputStr.slice(0, this.currentIndex)
-            this.activeToken = this.getBestMatch(strBeforeToken.trim(), true)
+            this.activeToken = this.getBestMatchingToken(strBeforeToken.trim(), true) // move trim into getBestMatching?
             const prevIndex = this.getPreviousIndex(strBeforeToken, this.activeToken.value.length)
             this.setCurrentIndex(prevIndex)
         }
@@ -39,12 +39,12 @@ export default class Tokenizer {
 
     getNextIndex() {
         const activeTokenLength = this.activeToken.value.length
-        const spaceCount = this.countSpacesAfterToken()
+        const spaceCount = this.countSpacesAfterActiveToken()
         
         return this.currentIndex + activeTokenLength + spaceCount
     }
 
-    countSpacesAfterToken() {
+    countSpacesAfterActiveToken() {
         const newIndex = this.currentIndex + this.activeToken.value.length
         const strAfterToken = this.inputStr.slice(newIndex)
 
@@ -52,12 +52,12 @@ export default class Tokenizer {
     }
 
     getPreviousIndex(strBeforeToken, prevTokenLength) {
-        const preceedingSpaceCount = strBeforeToken.match(/(s*)$/)[1].length
+        const preceedingSpaceCount = strBeforeToken.match(/\s*$/).length
 
         return this.currentIndex - preceedingSpaceCount - prevTokenLength
     }
 
-    getBestMatch(str, isForPrevious) {
+    getBestMatchingToken(str, isForPrevious) {
         let matchingTokens = []
         const rules = isForPrevious ? this.grammar.previousTokenRules : this.grammar.nextTokenRules
 
@@ -88,6 +88,10 @@ export default class Tokenizer {
             throw new LexicalError(`Maximal munch cannot be applied to tokens \'${token1}\' and \'${token2}\'`)
         }
         return tokens
+    }
+
+    getCurrentIndex() {
+        return this.currentIndex
     }
 
     setCurrentIndex(newIndex) {
