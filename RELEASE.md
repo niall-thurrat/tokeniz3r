@@ -70,3 +70,6 @@ List the individual test cases. One row per test case.
 
 ## Laboratory reflection
 Reflect on the task from a code quality perspective. Use concepts from the book.
+
+## Reference List
+[1] &emsp; R. C. Martin, *Clean Code*. Boston, MA: Pearson Education, Inc., 2009.
