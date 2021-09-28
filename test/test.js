@@ -12,144 +12,144 @@ const sequenceFuncCaller = (sequenceStr, func1, func2) => {
     })
 }
 
-describe("WordAndDotGrammar", () => {
-    const WordAndDotGrammar = [
-        {
-            tokenType: 'WORD',
-            regex: /^[\w|åäöÅÄÖ]+/
-        },
-        { 
-            tokenType: 'DOT',
-            regex: /^\./
-        }
-    ]
+// describe("WordAndDotGrammar", () => {
+//     const WordAndDotGrammar = [
+//         {
+//             tokenType: 'WORD',
+//             regex: /^[\w|åäöÅÄÖ]+/
+//         },
+//         { 
+//             tokenType: 'DOT',
+//             regex: /^\./
+//         }
+//     ]
 
-    describe("TC1_GetWordToken_Sequence[]", () => {
-        it('should be WORD("a")', () => {
-            const inputStr = 'a'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC1_GetWordToken_Sequence[]", () => {
+//         it('should be WORD("a")', () => {
+//             const inputStr = 'a'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            const token = tokenizer.getActiveToken()
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("a")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('WORD("a")')
+//         })
+//     })
 
-    describe("TC2_GetWordToken_Sequence[>]", () => {
-        it('should be WORD("aa")', () => {
-            const inputStr = 'a aa'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC2_GetWordToken_Sequence[>]", () => {
+//         it('should be WORD("aa")', () => {
+//             const inputStr = 'a aa'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            tokenizer.setActiveTokenToNext()
-            const token = tokenizer.getActiveToken()
+//             tokenizer.setActiveTokenToNext()
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("aa")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('WORD("aa")')
+//         })
+//     })
 
-    describe("TC3_GetDotToken_Sequence[>]", () => {
-        it('should be DOT(".")', () => {
-            const inputStr = 'a.b'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC3_GetDotToken_Sequence[>]", () => {
+//         it('should be DOT(".")', () => {
+//             const inputStr = 'a.b'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            tokenizer.setActiveTokenToNext()
-            const token = tokenizer.getActiveToken()
+//             tokenizer.setActiveTokenToNext()
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
+//         })
+//     })
 
-    describe("TC4_GetWordToken_Sequence[>>]", () => {
-        it('should be WORD("b")', () => {
-            const inputStr = 'a.b'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
+//     describe("TC4_GetWordToken_Sequence[>>]", () => {
+//         it('should be WORD("b")', () => {
+//             const inputStr = 'a.b'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//             const setNext = () => tokenizer.setActiveTokenToNext()
 
-            sequenceFuncCaller('>>', setNext)
-            const token = tokenizer.getActiveToken()
+//             sequenceFuncCaller('>>', setNext)
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
+//         })
+//     })
 
-    describe("TC5_GetWordToken_Sequence[>>]", () => {
-        it('should be WORD("b")', () => {
-            const inputStr = 'aa. b'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
+//     describe("TC5_GetWordToken_Sequence[>>]", () => {
+//         it('should be WORD("b")', () => {
+//             const inputStr = 'aa. b'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//             const setNext = () => tokenizer.setActiveTokenToNext()
 
-            sequenceFuncCaller('>>', setNext)
-            const token = tokenizer.getActiveToken()
+//             sequenceFuncCaller('>>', setNext)
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
+//         })
+//     })
 
-    describe("TC6_GetDotToken_Sequence[>><]", () => {
-        it('should be DOT(".")', () => {
-            const inputStr = 'a .b'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
-            const setPrev = () => tokenizer.setActiveTokenToPrevious()
+//     describe("TC6_GetDotToken_Sequence[>><]", () => {
+//         it('should be DOT(".")', () => {
+//             const inputStr = 'a .b'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//             const setNext = () => tokenizer.setActiveTokenToNext()
+//             const setPrev = () => tokenizer.setActiveTokenToPrevious()
 
-            sequenceFuncCaller('>><', setNext, setPrev)
-            const token = tokenizer.getActiveToken()
+//             sequenceFuncCaller('>><', setNext, setPrev)
+//             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
-        })
-    })
+//             expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
+//         })
+//     })
 
-    describe("TC7_GetEndToken_Sequence[]", () => {
-        it('should be END', () => {
-            const inputStr = ''
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC7_GetEndToken_Sequence[]", () => {
+//         it('should be END', () => {
+//             const inputStr = ''
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            const token = tokenizer.getActiveToken()
+//             const token = tokenizer.getActiveToken()
 
-            expect(token.type).to.equal('END')
-        })
-    })
+//             expect(token.type).to.equal('END')
+//         })
+//     })
 
-    describe("TC8_GetEndToken_Sequence[]", () => {
-        it('should be END', () => {
-            const inputStr = ' '
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC8_GetEndToken_Sequence[]", () => {
+//         it('should be END', () => {
+//             const inputStr = ' '
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            const token = tokenizer.getActiveToken()
+//             const token = tokenizer.getActiveToken()
 
-            expect(token.type).to.equal('END')
-        })
-    })
+//             expect(token.type).to.equal('END')
+//         })
+//     })
 
-    describe("TC9_GetEndToken_Sequence[>]", () => {
-        it('should be END', () => {
-            const inputStr = 'a'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+//     describe("TC9_GetEndToken_Sequence[>]", () => {
+//         it('should be END', () => {
+//             const inputStr = 'a'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
-            tokenizer.setActiveTokenToNext()
-            const token = tokenizer.getActiveToken()
+//             tokenizer.setActiveTokenToNext()
+//             const token = tokenizer.getActiveToken()
 
-            expect(token.type).to.equal('END')
-        })
-    })
+//             expect(token.type).to.equal('END')
+//         })
+//     })
 
-    describe("TC10_GetException_Sequence[<]", () => {
-        it('should be MethodCallError', () => {
-            const inputStr = 'a'
-            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar) 
+//     describe("TC10_GetException_Sequence[<]", () => {
+//         it('should be MethodCallError', () => {
+//             const inputStr = 'a'
+//             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar) 
 
-            expect(tokenizer.setActiveTokenToPrevious.bind(tokenizer)).to.throw(MethodCallError)
-        })
-    })
+//             expect(tokenizer.setActiveTokenToPrevious.bind(tokenizer)).to.throw(MethodCallError)
+//         })
+//     })
 
-    describe("TC11_GetException_Sequence[]", () => {
-        it('should be LexicalError', () => {
-            const inputStr = '!'
+//     describe("TC11_GetException_Sequence[]", () => {
+//         it('should be LexicalError', () => {
+//             const inputStr = '!'
 
-            expect(() => new Tokenizer(inputStr, WordAndDotGrammar)).to.throw(LexicalError)
-        })
-    })
-})
+//             expect(() => new Tokenizer(inputStr, WordAndDotGrammar)).to.throw(LexicalError)
+//         })
+//     })
+// })
 
 describe("ArithmeticGrammar", () => {
     const ArithmeticGrammar = [
@@ -183,66 +183,66 @@ describe("ArithmeticGrammar", () => {
         }
     ]
 
-    describe("TC12_GetNumberToken_Sequence[]", () => {
-        it('should be NUMBER("3")', () => {
-            const inputStr = '3'
-            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    // describe("TC12_GetNumberToken_Sequence[]", () => {
+    //     it('should be NUMBER("3")', () => {
+    //         const inputStr = '3'
+    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
-            const token = tokenizer.getActiveToken()
+    //         const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3")')
-        })
-    })
+    //         expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3")')
+    //     })
+    // })
 
-    describe("TC13_GetNumberToken_Sequence[]", () => {
-        it('should be NUMBER("3.14")', () => {
-            const inputStr = '3.14'
-            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    // describe("TC13_GetNumberToken_Sequence[]", () => {
+    //     it('should be NUMBER("3.14")', () => {
+    //         const inputStr = '3.14'
+    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
-            const token = tokenizer.getActiveToken()
+    //         const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3.14")')
-        })
-    })
+    //         expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3.14")')
+    //     })
+    // })
 
-    describe("TC14_GetMulToken_Sequence[>>>]", () => {
-        it('should be MUL("*")', () => {
-            const inputStr = '3 + 54 * 4'
-            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
+    // describe("TC14_GetMulToken_Sequence[>>>]", () => {
+    //     it('should be MUL("*")', () => {
+    //         const inputStr = '3 + 54 * 4'
+    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    //         const setNext = () => tokenizer.setActiveTokenToNext()
 
-            sequenceFuncCaller('>>>', setNext)
-            const token = tokenizer.getActiveToken()
+    //         sequenceFuncCaller('>>>', setNext)
+    //         const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('MUL("*")')
-        })
-    })
+    //         expect(`${token.type}("${token.value}")`).to.equal('MUL("*")')
+    //     })
+    // })
 
-    describe("TC15_GetException_Sequence[>>>]", () => {
-        it('should be LexicalError', () => {
-            const inputStr = '3+5 # 4'
-            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
+    // describe("TC15_GetException_Sequence[>>>]", () => {
+    //     it('should be LexicalError', () => {
+    //         const inputStr = '3+5 # 4'
+    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    //         const setNext = () => tokenizer.setActiveTokenToNext()
 
-            sequenceFuncCaller('>>', setNext)
+    //         sequenceFuncCaller('>>', setNext)
 
-            expect(tokenizer.setActiveTokenToNext.bind(tokenizer)).to.throw(LexicalError)
-        })
-    })
+    //         expect(tokenizer.setActiveTokenToNext.bind(tokenizer)).to.throw(LexicalError)
+    //     })
+    // })
 
-    describe("TC16_GetAddToken_Sequence[><>>>]", () => {
-        it('should be ADD("+")', () => {
-            const inputStr = '3.0+54.1     + 4.2'
-            const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
-            const setNext = () => tokenizer.setActiveTokenToNext()
-            const setPrev = () => tokenizer.setActiveTokenToPrevious()
+    // describe("TC16_GetAddToken_Sequence[><>>>]", () => {
+    //     it('should be ADD("+")', () => {
+    //         const inputStr = '3.0+54.1     + 4.2'
+    //         const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
+    //         const setNext = () => tokenizer.setActiveTokenToNext()
+    //         const setPrev = () => tokenizer.setActiveTokenToPrevious()
 
-            sequenceFuncCaller('><>>>', setNext, setPrev)
-            const token = tokenizer.getActiveToken()
+    //         sequenceFuncCaller('><>>>', setNext, setPrev)
+    //         const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('ADD("+")')
-        })
-    })
+    //         expect(`${token.type}("${token.value}")`).to.equal('ADD("+")')
+    //     })
+    // })
 
     describe("TC17_GetLeftParenthesisToken_Sequence[>>]", () => {
         it('should be LEFT_PARENTHESIS("(")', () => {
