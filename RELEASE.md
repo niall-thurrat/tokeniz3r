@@ -7,7 +7,7 @@
   - [✅] The only static methods or functions outside of classes that I have are to start my test application ex main (java).
   - [✅] The only libraries and ready-made classes used are those that must be used (or used to test the module).
 
-*  The END token (incl. regexp) is created in my app. This had to be done to manage handling the token in a controlled way.
+*The END token (incl. regexp) is created in my app. This had to be done to manage handling the token in a controlled way.
 
 ## Self-assessment and goals
   - [ ] I'm not done because I know I'm missing something. Then do not submit!
@@ -19,7 +19,7 @@
     - [ ] Reflection is written
   - [ ] With this submission, I strive for higher grades (C-B) and consider myself to meet all the additional requirements for this.
     - [✅] All test cases are written
-    - [ ] Own test cases for Maximum munch and edge cases
+    - [✅] Own test cases for Maximum munch and edge cases
     - [✅] Test cases are automated
     - [ ] There is a clear description of how to use the module (in git)
     - [ ] The code quality requirements are varied
@@ -70,6 +70,3 @@ List the individual test cases. One row per test case.
 
 ## Laboratory reflection
 Reflect on the task from a code quality perspective. Use concepts from the book.
-
-## Reference List
-[1] &emsp; R. C. Martin, *Clean Code*. Boston, MA: Pearson Education, Inc., 2009.
