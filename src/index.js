@@ -57,22 +57,30 @@ export default class Tokenizer {
     return this.currentIndex - preceedingSpaceCount - prevTokenLength
   }
 
-  getBestMatchingToken (str, isForPrevious) {
-    const matchingTokens = []
-    const rules = isForPrevious ? this.grammar.previousTokenRules : this.grammar.nextTokenRules
+  getBestMatchingToken(strToMatch, isForPrevious) {
+    const grammarRules = isForPrevious ? this.grammar.previousTokenRules : this.grammar.nextTokenRules
+    const matchingTokens = this.getMatchingTokens(grammarRules, strToMatch)
 
-    rules.forEach(rule => {
-      const match = str.trim().match(rule.regex)
-      if (match !== null) {
-        matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
-      }
-    })
-
-    if (matchingTokens.length === 0) {
-      throw new LexicalError(`No grammar rule matches string \'${this.limitStrTo10Chars(str)}\'`)
-    }
-
+    this.throwErrorIfNoMatchingToken(matchingTokens, strToMatch)
+    
     return (matchingTokens.length > 1) ? this.applyMaximalMunch(matchingTokens)[0] : matchingTokens[0]
+  }
+
+  getMatchingTokens(grammarRules, strToMatch) {
+      const matchingTokens = []
+
+      grammarRules.forEach(rule => {
+        const match = strToMatch.trim().match(rule.regex)
+        if (match !== null) matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
+      })
+
+      return matchingTokens
+  }
+
+  throwErrorIfNoMatchingToken(matchingTokens, matchedStr) {
+    if (matchingTokens.length === 0) {
+      throw new LexicalError(`No grammar rule matches string \'${this.limitStrTo10Chars(matchedStr)}\'`)
+    }
   }
 
   limitStrTo10Chars (str) {
