@@ -17,13 +17,13 @@
     - [✅] All code and history are in git
     - [✅] The code quality requirements are met
     - [✅] Reflection is written
-  - [ ] With this submission, I strive for higher grades (C-B) and consider myself to meet all the additional requirements for this.
+  - [✅] With this submission, I strive for higher grades (C-B) and consider myself to meet all the additional requirements for this.
     - [✅] All test cases are written
     - [✅] Own test cases for Maximum munch and edge cases
     - [✅] Test cases are automated
     - [✅] There is a clear description of how to use the module (in git)
-    - [ ] The code quality requirements are varied
-  - [✅] I strive for the highest grade (A) with this submission
+    - [✅] The code quality requirements are varied
+  - [] I strive for the highest grade (A) with this submission
 
 Clarification: The examiner will give grades regardless of what you think.
 
@@ -126,26 +126,21 @@ List the individual test cases. One row per test case.
 
 | Name and explanation  | Reflection                                   |
 | -------------------  | ---------------------------------------------|
-| setActiveTokenToPrevious: A public method on the Tokenizer class | **Intention revealing name**
-This method is one of 2 setters that are available for the activeToken property on the module’s interface. It was important to me that this method had a clear intention revealing name. A certain amount of implicity is used however. I am aware that I do not specify exactly what ‘previous’ refers to, but I am trying to avoid using a very long name such as ‘setActiveTokenToPreviousBestMatchingToken’. I am making an assumption that users of the module will have some understanding that a tokenizer moves to next and previous tokens, and this functionality is well documented in the README.md if they are in any doubt when trying to understand the basics of the module.
-
-**Avoid disinformation**.  
-I made a decision in the end to not abbreviate ‘Previous’ to ‘Prev’ in this name to avoid disinformation.  Martin [1, p.20] warns against ‘using names which vary in small ways’, and I found multiple sequential calls to this function and its corresponding ‘setActiveTokenToNext’ function looked very similar due to being the exact same length and only having 4 different letters. Simply extending the name to contain ‘Previous’ meant a clear distinction between the 2 due to name length alone |
-| getBestMatchingToken |  |
-| strToMatch |  |
-| isForPrevious |  |
-| applyMaximalMunch |  |
+| setActiveTokenToPrevious: A public method on the Tokenizer class | **Intention revealing name**: This method is one of 2 setters that are available for the activeToken property on the module’s interface. It was important to me that this method had a clear intention revealing name. A certain amount of implicity is used however. I am aware that I do not specify exactly what ‘previous’ refers to, but I am trying to avoid using a very long name such as ‘setActiveTokenToPreviousBestMatchingToken’. I am making an assumption that users of the module will have some understanding that a tokenizer moves to next and previous tokens, and this functionality is well documented in the README.md if they are in any doubt when trying to understand the basics of the module.  **Avoid disinformation**: I made a decision in the end to not abbreviate ‘Previous’ to ‘Prev’ in this name to avoid disinformation.  Martin [1, p.20] warns against ‘using names which vary in small ways’, and I found multiple sequential calls to this function and its corresponding ‘setActiveTokenToNext’ function looked very similar due to being the exact same length and only having 4 different letters. Simply extending the name to contain ‘Previous’ meant a clear distinction between the 2 due to name length alone |
+| getBestMatchingToken: A public method on the Tokenizer class | I feel this is a clear **Intention revealing name**.  |
+| strToMatch: an arg on the getBestMatchingToken method | This may be breaking the **Make meaningful distinctions** rule as I've written "str" in the name which Martin considers a noise word, but I find in Javascript that this is more useful than if I were to be using a typed language like C# that would specify this out of necessity. The decision has also been affected by not using comments, which would naturally have specified that this is a string. |
+| isForPrevious: an arg on the getBestMatchingToken method | **Method names** using "is" lets the viewer know a boolean is being returned. For brevity I did not make this completely follow the rule **Intention revealing name** and in hindsight it needs context to be understood and should probably be changed or extended to something like isToMatchPrviousToken|
+| applyMaximalMunch: A public method on the Tokenizer class | I feel this is a clear **Intention revealing name**.|
 
 ### Functions
 
-| Method name and explanation (no. lines excl. ws)  |                                  |
+| Method name and explanation (no. lines excl. ws)  | Reflection                                |
 | -------------------  | ---------------------------------------------|
-| setActiveTokenToNext (7) | **Small!**
-This method is too long according to Martin’s ‘Small!’ rule |
-| setActiveTokenToPrevious (7) |    |
-| applyMaximalMunch (6) |    |
-| getMatchingTokens (5) |    |
-| setNextTokenRules (5) |    |
+| setActiveTokenToNext (7) | **Small!**: This method is too long according to Martin’s ‘Small!’ rule. I think the function sticks to the **Do one thing** rule and does exactly what the naming suggests.  |
+| setActiveTokenToPrevious (7) | **Small!**: Too long according to Martin’s ‘Small!’ rule. In contrast to setActiveTokenToNext, I feel that there is code in here that means that this does not apply to the **Do one thing** rule. I had trouble thou pulling the code that is needed to update the currentIndex out of this function without using at least 3 arguments. |
+| applyMaximalMunch (6) | **Small!**: Too long according to the ‘Small!’ rule. This however could be fixed by getting rid of the 2 lines used to create pretty strings to represent the tokens. Had I time, I would have overwritten the toString method of the Token class. |
+| getMatchingTokens (5) | **Small!**: Too long according to the ‘Small!’ rule. This was extracted from the getBestMatchingToken function and I am quite happy with it and feel it sticks to the **Do one thing** rule. I can't really see how to shorten it without making a super wide forEach statement on one line |
+| setPreviousTokenRules (5) | **Small!**: Too long according to Martin though I'm very happy with getting it down to 5 lines. I done so by extracting the code for the createPreviousTokenRule function from it. Reads much bettrer too. |
 
 ## Laboratory reflection
 Reflect on the task from a code quality perspective. Use concepts from the book.
