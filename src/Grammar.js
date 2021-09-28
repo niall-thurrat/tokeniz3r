@@ -40,41 +40,29 @@ export default class Grammar {
   }
 
   doValidation (grammar) {
-    if (this.isNotArrayOfObjects(grammar)) {
-      throw new GrammarValidationError('Grammar argument is not an array of expected objects')
-    }
-    if (this.isMissingAProperty(grammar)) {
-      throw new GrammarValidationError('Grammar rule found with missing property')
-    }
-    if (this.isFormattedWithAWrongType(grammar)) {
-      throw new GrammarValidationError('Grammar rule property of wrong type used')
-    }
+    this.validateIsArrayOfObjects(grammar) 
+    this.validateIsNotMissingAProperty(grammar)
+    this.validateIsNotFormattedWithAWrongType(grammar)
   }
 
-  isNotArrayOfObjects (grammar) {
-    let isFailing = false
-
+  validateIsArrayOfObjects(grammar) {
     grammar.forEach(rule => {
-      if (Array.isArray(rule) || typeof rule !== 'object') { isFailing = true }
+      if (Array.isArray(rule) || typeof rule !== 'object')
+        throw new GrammarValidationError('Grammar argument is not an array of expected objects')
     })
-    return isFailing
   }
 
-  isMissingAProperty (grammar) {
-    let isFailing = false
-
+  validateIsNotMissingAProperty(grammar) {
     grammar.forEach(rule => {
-      if ('tokenType' in rule === false || 'regex' in rule === false) { isFailing = true }
+      if ('tokenType' in rule === false || 'regex' in rule === false)
+          throw new GrammarValidationError('Grammar rule found with missing property')
     })
-    return isFailing
   }
 
-  isFormattedWithAWrongType (grammar) {
-    let isFailing = false
-
-    grammar.forEach(rule => {
-      if (typeof rule.tokenType !== 'string' || rule.regex instanceof RegExp === false) { isFailing = true }
+  validateIsNotFormattedWithAWrongType(grammar) {
+   grammar.forEach(rule => {
+      if (typeof rule.tokenType !== 'string' || rule.regex instanceof RegExp === false)
+        throw new GrammarValidationError('Grammar rule property of wrong type used')
     })
-    return isFailing
   }
 }
