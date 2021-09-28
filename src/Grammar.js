@@ -3,12 +3,12 @@ import GrammarValidationError from './exceptions/GrammarValidationError.js'
 
 export default class Grammar {
   constructor (grammar) {
+    this.doValidation(grammar)
     this.nextTokenRules = this.setNextTokenRules(grammar)
     this.previousTokenRules = this.setPreviousTokenRules(grammar)
   }
 
-  setNextTokenRules (grammar) {
-    this.doValidation(grammar)
+  setNextTokenRules(grammar) {
     const rules = []
 
     grammar.forEach(rule => {
@@ -24,14 +24,19 @@ export default class Grammar {
     const prevTokenRules = []
 
     grammar.forEach(rule => {
-      // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
-      const regexStr = rule.regex.toString()
-      const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
-      const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
-
-      prevTokenRules.push(new Rule(rule.tokenType, new RegExp(pattern, flags)))
+      const prevTokenRule = this.createPreviousTokenRule(rule)
+      prevTokenRules.push(prevTokenRule)
     })
     return prevTokenRules
+  }
+
+  createPreviousTokenRule(rule) {
+    // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
+    const regexStr = rule.regex.toString()
+    const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
+    const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
+
+    return new Rule(rule.tokenType, new RegExp(pattern, flags))
   }
 
   doValidation (grammar) {
