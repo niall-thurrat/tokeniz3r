@@ -67,14 +67,14 @@ export default class Tokenizer {
   }
 
   getMatchingTokens(grammarRules, strToMatch) {
-      const matchingTokens = []
+    const matchingTokens = []
 
-      grammarRules.forEach(rule => {
-        const match = strToMatch.trim().match(rule.regex)
-        if (match !== null) matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
-      })
+    grammarRules.forEach(rule => {
+    const match = strToMatch.trim().match(rule.regex)
+    if (match !== null) matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
+    })
 
-      return matchingTokens
+    return matchingTokens
   }
 
   throwErrorIfNoMatchingToken(matchingTokens, matchedStr) {
@@ -105,10 +105,4 @@ export default class Tokenizer {
   setCurrentIndex (newIndex) {
     this.currentIndex = newIndex
   }
-
-  // TODO:
-  // encapsulation
-  // refactor
-  // use .npmignore to remove unnecessary files when module is imported
-  // publish to npm
 }
