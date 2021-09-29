@@ -31,7 +31,7 @@ describe("WordAndDotGrammar", () => {
 
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("a")')
+            expect(token.toString()).to.equal('WORD("a")')
         })
     })
 
@@ -43,7 +43,7 @@ describe("WordAndDotGrammar", () => {
             tokenizer.setActiveTokenToNext()
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("aa")')
+            expect(token.toString()).to.equal('WORD("aa")')
         })
     })
 
@@ -55,7 +55,7 @@ describe("WordAndDotGrammar", () => {
             tokenizer.setActiveTokenToNext()
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
+            expect(token.toString()).to.equal('DOT(".")')
         })
     })
 
@@ -68,7 +68,7 @@ describe("WordAndDotGrammar", () => {
             sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
+            expect(token.toString()).to.equal('WORD("b")')
         })
     })
 
@@ -81,7 +81,7 @@ describe("WordAndDotGrammar", () => {
             sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("b")')
+            expect(token.toString()).to.equal('WORD("b")')
         })
     })
 
@@ -95,7 +95,7 @@ describe("WordAndDotGrammar", () => {
             sequenceFuncCaller('>><', setNext, setPrev)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('DOT(".")')
+            expect(token.toString()).to.equal('DOT(".")')
         })
     })
 
@@ -190,7 +190,7 @@ describe("ArithmeticGrammar", () => {
 
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3")')
+            expect(token.toString()).to.equal('NUMBER("3")')
         })
     })
 
@@ -201,7 +201,7 @@ describe("ArithmeticGrammar", () => {
 
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('NUMBER("3.14")')
+            expect(token.toString()).to.equal('NUMBER("3.14")')
         })
     })
 
@@ -214,7 +214,7 @@ describe("ArithmeticGrammar", () => {
             sequenceFuncCaller('>>>', setNext)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('MUL("*")')
+            expect(token.toString()).to.equal('MUL("*")')
         })
     })
 
@@ -240,7 +240,7 @@ describe("ArithmeticGrammar", () => {
             sequenceFuncCaller('><>>>', setNext, setPrev)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('ADD("+")')
+            expect(token.toString()).to.equal('ADD("+")')
         })
     })
 
@@ -253,7 +253,7 @@ describe("ArithmeticGrammar", () => {
             sequenceFuncCaller('>>', setNext)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('LEFT_PARENTHESIS("(")')
+            expect(token.toString()).to.equal('LEFT_PARENTHESIS("(")')
         })
     })
 
@@ -266,7 +266,7 @@ describe("ArithmeticGrammar", () => {
             sequenceFuncCaller('>>>>', setNext)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('RIGHT_PARENTHESIS(")")')
+            expect(token.toString()).to.equal('RIGHT_PARENTHESIS(")")')
         })
     })
 
@@ -278,7 +278,7 @@ describe("ArithmeticGrammar", () => {
             tokenizer.setActiveTokenToNext()
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('DIV("/")')
+            expect(token.toString()).to.equal('DIV("/")')
         })
     })
 
@@ -290,7 +290,7 @@ describe("ArithmeticGrammar", () => {
             tokenizer.setActiveTokenToNext()
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('SUBTRACT("-")')
+            expect(token.toString()).to.equal('SUBTRACT("-")')
         })
     })
 })
@@ -325,7 +325,7 @@ describe("MaximalMunchGrammar", () => {
 
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('FLOAT("3.14")')
+            expect(token.toString()).to.equal('FLOAT("3.14")')
         })
     })
 
@@ -360,7 +360,7 @@ describe("WordAndDotGrammar", () => {
             sequenceFuncCaller('>>>>><<<<<', getNext, getPrev)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("aaaaa")')
+            expect(token.toString()).to.equal('WORD("aaaaa")')
         })
     })
 
@@ -374,7 +374,7 @@ describe("WordAndDotGrammar", () => {
             sequenceFuncCaller('>><<', getNext, getPrev)
             const token = tokenizer.getActiveToken()
 
-            expect(`${token.type}("${token.value}")`).to.equal('WORD("a")')
+            expect(token.toString()).to.equal('WORD("a")')
         })
     })
 })

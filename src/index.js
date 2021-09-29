@@ -71,7 +71,9 @@ export default class Tokenizer {
 
     grammarRules.forEach(rule => {
     const match = strToMatch.trim().match(rule.regex)
-    if (match !== null) matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
+    if (match !== null) {
+        matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
+    }
     })
 
     return matchingTokens
@@ -91,9 +93,7 @@ export default class Tokenizer {
     tokens.sort((a, b) => b.value.length - a.value.length)
 
     if (tokens[0].value.length === tokens[1].value.length) {
-      const token1 = `${tokens[0].type}("${tokens[0].value}")`
-      const token2 = `${tokens[1].type}("${tokens[1].value}")`
-      throw new LexicalError(`Maximal munch cannot be applied to tokens \'${token1}\' and \'${token2}\'`)
+      throw new LexicalError(`Maximal munch cannot be applied to tokens \'${tokens[0].toString()}\' and \'${tokens[1].toString()}\'`)
     }
     return tokens
   }

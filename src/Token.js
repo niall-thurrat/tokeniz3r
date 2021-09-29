@@ -4,3 +4,7 @@ export default class Token {
     this.value = value
   }
 }
+
+Token.prototype.toString = function() {
+  return `${this.type}("${this.value}")`
+}
