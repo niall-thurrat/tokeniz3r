@@ -350,28 +350,34 @@ describe("WordAndDotGrammar", () => {
         }
     ]
 
-    describe("TC23_EdgeCase_GetStartingTokenWhenInputStrHasTrailingSpace_Sequence[>>>>><<<<<]", () => {
-        it('should be WORD("aaaaa")', () => {
-            const inputStr = 'aaaaa bbbb ccc dd e '
+    describe("TC23_EdgeCase_GetLastTokenFromInputStrWithNoTrailingSpace_Sequence[]", () => {
+        it('should be WORD("a")', () => {
+            const inputStr = 'a '
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
-            const getNext = () => tokenizer.setActiveTokenToNext()
-            const getPrev = () => tokenizer.setActiveTokenToPrevious()
-
-            sequenceFuncCaller('>>>>><<<<<', getNext, getPrev)
+    
             const token = tokenizer.getActiveToken()
 
-            expect(token.toString()).to.equal('WORD("aaaaa")')
+            expect(token.toString()).to.equal('WORD("a")')
         })
     })
 
-    describe("TC24_EdgeCase_GetStartingTokenWhenInputStrHasLeadingSpace_Sequence[>><<]", () => {
-        it('should be WORD("a")', () => {
-            const inputStr = '    a b'
+    describe("TC24_EdgeCase_GetEndTokenWhenInputStrHasTrailingSpace_Sequence[>]", () => {
+        it('should be END', () => {
+            const inputStr = 'a '
             const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
-            const getNext = () => tokenizer.setActiveTokenToNext()
-            const getPrev = () => tokenizer.setActiveTokenToPrevious()
+            
+            tokenizer.setActiveTokenToNext()
+            const token = tokenizer.getActiveToken()
 
-            sequenceFuncCaller('>><<', getNext, getPrev)
+            expect(token.type).to.equal('END')
+        })
+    })
+
+    describe("TC25_EdgeCase_GetFirstTokenThatDoesNotContainLeadingSpace_Sequence[]", () => {
+        it('should be WORD("a")', () => {
+            const inputStr = ' a'
+            const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
+    
             const token = tokenizer.getActiveToken()
 
             expect(token.toString()).to.equal('WORD("a")')

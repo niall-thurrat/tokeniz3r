@@ -5,7 +5,6 @@
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./src/index.js",
     "try": "node ./src/test.js",
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",

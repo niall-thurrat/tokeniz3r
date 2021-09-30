@@ -50,73 +50,42 @@ A mocha test suite using the chai expect assertion library was added to the modu
 ### Test cases
 List the individual test cases. **Bold** things that you have filled in yourself. One line per test case.
 
-All tests pass. Results are:
+| Name  | Grammar | String | Sequence | Expected Active Token | PASS/FAIL |
+| --------- | --------- | ------ | ------- | ------------ | --------- |
+| TC1 | WordAndDotGrammar | "a" | [] | WORD("a") | ✅ |
+| TC2 | WordAndDotGrammar | "a aa" | [>] | WORD("aa") | ✅ |
+| TC3 | WordAndDotGrammar | "a.b" | [>] | DOT(".") | ✅ |
+| TC4 | WordAndDotGrammar | "a.b" | [>>] | ***WORD("b")*** | ✅ |
+| TC5 | WordAndDotGrammar | "aa. b" | ***[>>]*** | WORD("b") | ✅ |
+| TC6 | WordAndDotGrammar | "a .b" | [>><] | DOT(".") | ✅ |
+| TC7 | WordAndDotGrammar | "" | [] | END | ✅ |
+| TC8 | WordAndDotGrammar | " " | [] | ***END*** | ✅ |
+| TC9 | WordAndDotGrammar | "a" | ***[>]*** | END | ✅ |
+| TC10 | WordAndDotGrammar | "a" | [<] | ***Exception*** | ✅ |
+| TC11 | WordAndDotGrammar | "!" | [] | Exception | ✅ |
+| TC12 | ArithmeticGrammar | "3" | [] | Number("3") | ✅ |
+| TC13 | ArithmeticGrammar | "3.14" | [] | NUMBER("3.14") | ✅ |
+| TC14 | ArithmeticGrammar | "3 + 54 * 4" | [>>>] | MUL("*") | ✅ |
+| TC15 | ArithmeticGrammar | "3+5 # 4" | [>>>] | ***Exception*** | ✅ |
+| TC16 | ArithmeticGrammar | "3.0+54.1     + 4.2" | [><>>>] | ***ADD("+")*** | ✅ |
 
-```javascript
-  WordAndDotGrammar
-    TC1_GetWordToken_Sequence[]
-      ✔ should be WORD("a")    
-    TC2_GetWordToken_Sequence[>]
-      ✔ should be WORD("aa")    
-    TC3_GetDotToken_Sequence[>] 
-      ✔ should be DOT(".")      
-    TC4_GetWordToken_Sequence[>>]
-      ✔ should be WORD("b")
-    TC5_GetWordToken_Sequence[>>]
-      ✔ should be WORD("b")
-    TC6_GetDotToken_Sequence[>><]
-      ✔ should be DOT(".")
-    TC7_GetEndToken_Sequence[]
-      ✔ should be END
-    TC8_GetEndToken_Sequence[]
-      ✔ should be END
-    TC9_GetEndToken_Sequence[>]
-      ✔ should be END
-    TC10_GetException_Sequence[<]
-      ✔ should be MethodCallError
-    TC11_GetException_Sequence[]
-      ✔ should be LexicalError
-
-  ArithmeticGrammar
-    TC12_GetNumberToken_Sequence[]
-      ✔ should be NUMBER("3")
-    TC13_GetNumberToken_Sequence[]
-      ✔ should be NUMBER("3.14")
-    TC14_GetMulToken_Sequence[>>>]
-      ✔ should be MUL("*")
-    TC15_GetException_Sequence[>>>]
-      ✔ should be LexicalError
-    TC16_GetAddToken_Sequence[><>>>]
-      ✔ should be ADD("+")
-```
+You can comment if your tokenizer differs slightly from the default.
 
 ### Test cases for higher grade
 
 List the individual test cases. One row per test case.
 
-```javascript
-  ArithmeticGrammar
-    TC17_GetLeftParenthesisToken_Sequence[>>]
-      ✔ should be LEFT_PARENTHESIS("(")
-    TC18_GetRightParenthesisToken_Sequence[>>>>]
-      ✔ should be RIGHT_PARENTHESIS(")")
-    TC19_GetDivisionToken_Sequence[>]
-      ✔ should be DIV("/")
-    TC20_GetSubtractionToken_Sequence[>]
-      ✔ should be SUBTRACT("-")
-
-  MaximalMunchGrammar
-    TC21_GetFloatTokenUsingMaxMunch_Sequence[]
-      ✔ should be FLOAT("3.14")
-    TC22_GetExceptionForSameLengthMatchingTokens_Sequence[]
-      ✔ should be LexicalError
-
-  WordAndDotGrammar
-    TC23_EdgeCase_GetStartingTokenWhenInputStrHasTrailingSpace_Sequence[>>>>><<<<<]
-      ✔ should be WORD("aaaaa")
-    TC24_EdgeCase_GetStartingTokenWhenInputStrHasLeadingSpace_Sequence[>><<]
-      ✔ should be WORD("a")
-```
+| Name  | Grammar | String | Sequence | Expected Active Token | PASS/FAIL |
+| --------- | --------- | ------ | ------- | ------------ | --------- |
+| TC17_GetLeftParenthesisToken_Sequence[>>] | ArithmeticGrammar | "3.0 + (5 * 4)" | [>>] | LEFT_PARENTHESIS("(") | ✅ |
+| TC18_GetRightParenthesisToken_Sequence[>>>>] | ArithmeticGrammar | "(5 * 4) / 2" | [>>>>] | RIGHT_PARENTHESIS(")") | ✅ |
+| TC19_GetDivisionToken_Sequence[>] | ArithmeticGrammar | "2 / 2" | [>] | DIV("/") | ✅ |
+| TC20_GetSubtractionToken_Sequence[>] | ArithmeticGrammar | "7-4" | [>] | SUBTRACT("-") | ✅ |
+| TC21_GetFloatTokenUsingMaxMunch_Sequence[] | MaximalMunchGrammar | 3.14" | [] | FLOAT("3.14") | ✅ |
+| TC22_GetExceptionForSameLengthMatchingTokens_Sequence[] | FailingMaximalMunchGrammar | "3.14" | [] | Exception | ✅ |
+| TC23_EdgeCase_GetLastTokenFromInputStrWithNoTrailingSpace_Sequence[] | WordAndDotGrammar | "a " | [] | WORD("a") | ✅ |
+| TC24_EdgeCase_GetEndTokenWhenInputStrHasTrailingSpace_Sequence[>] | WordAndDotGrammar | "a " | [>] | END | ✅ |
+| TC25_EdgeCase_GetFirstTokenThatDoesNotContainLeadingSpace_Sequence[] | WordAndDotGrammar | "a " | [] | WORD("a") | ✅ |
 
 ## Code quality requirements
 
@@ -124,22 +93,22 @@ List the individual test cases. One row per test case.
 
 ### Naming
 
-| Name and explanation  | Reflection                                   |
+| Name and explanation  | Reflection  |
 | -------------------  | ---------------------------------------------|
-| setActiveTokenToPrevious: A public method on the Tokenizer class | **Intention revealing name**: This method is one of 2 setters that are available for the activeToken property on the module’s interface. It was important to me that this method had a clear intention revealing name. A certain amount of implicity is used however. I am aware that I do not specify exactly what ‘previous’ refers to, but I am trying to avoid using a very long name such as ‘setActiveTokenToPreviousBestMatchingToken’. I am making an assumption that users of the module will have some understanding that a tokenizer moves to next and previous tokens, and this functionality is well documented in the README.md if they are in any doubt when trying to understand the basics of the module.  **Avoid disinformation**: I made a decision in the end to not abbreviate ‘Previous’ to ‘Prev’ in this name to avoid disinformation.  Martin [1, p.20] warns against ‘using names which vary in small ways’, and I found multiple sequential calls to this function and its corresponding ‘setActiveTokenToNext’ function looked very similar due to being the exact same length and only having 4 different letters. Simply extending the name to contain ‘Previous’ meant a clear distinction between the 2 due to name length alone |
+| setActiveTokenToPrevious: A public method on the Tokenizer class | **Intention revealing name**: This method is one of 2 setters that are available for the activeToken property on the module’s interface. It was important to me that this method had a clear intention revealing name. A certain amount of implicity is used however. I am aware that I do not specify exactly what ‘previous’ refers to, but I am trying to avoid using a very long name such as ‘setActiveTokenToPreviousBestMatchingToken’. I am making an assumption that users of the module will have some understanding that a tokenizer moves to next and previous tokens, and this functionality is well documented in the README.md if they are in any doubt when trying to understand the basics of the module.<br><br>**Avoid disinformation**: I made a decision in the end to not abbreviate ‘Previous’ to ‘Prev’ in this name to avoid disinformation.  Martin [1, p.20] warns against ‘using names which vary in small ways’, and I found multiple sequential calls to this function and its corresponding ‘setActiveTokenToNext’ function looked very similar due to being the exact same length and only having 4 different letters. Simply extending the name to contain ‘Previous’ meant a clear distinction between the 2 due to name length alone name to contain ‘Previous’ meant a clear distinction between the 2 due to name length alone.  |
 | getBestMatchingToken: A public method on the Tokenizer class | I feel this is a clear **Intention revealing name**.  |
 | strToMatch: an arg on the getBestMatchingToken method | This may be breaking the **Make meaningful distinctions** rule as I've written "str" in the name which Martin considers a noise word, but I find in Javascript that this is more useful than if I were to be using a typed language like C# that would specify this out of necessity. The decision has also been affected by not using comments, which would naturally have specified that this is a string. |
-| isForPrevious: an arg on the getBestMatchingToken method | **Method names** using "is" lets the viewer know a boolean is being returned. For brevity I did not make this completely follow the rule **Intention revealing name** and in hindsight it needs context to be understood and should probably be changed or extended to something like isToMatchPrviousToken|
+| isForPrevious: an arg on the getBestMatchingToken method | **Method names** using "is" lets the viewer know a boolean is being returned.<br><br>For brevity I did not make this completely follow the rule **Intention revealing name** and in hindsight it needs context to be understood and should probably be changed or extended to something like isToMatchPrviousToken|
 | applyMaximalMunch: A public method on the Tokenizer class | I feel this is a clear **Intention revealing name**.|
 
 ### Functions
 
-| Method name and explanation (no. lines excl. ws)  | Reflection                                |
+| Method name and explanation (no. lines excl. ws)  | Reflection  |
 | -------------------  | ---------------------------------------------|
-| setActiveTokenToNext (7) | **Small!**: This method is too long according to Martin’s ‘Small!’ rule. I think the function sticks to the **Do one thing** rule and does exactly what the naming suggests.  |
-| setActiveTokenToPrevious (7) | **Small!**: Too long according to Martin’s ‘Small!’ rule. In contrast to setActiveTokenToNext, I feel that there is code in here that means that this does not apply to the **Do one thing** rule. I had trouble thou pulling the code that is needed to update the currentIndex out of this function without using at least 3 arguments. |
+| setActiveTokenToNext (7) | **Small!**: This method is too long according to Martin’s ‘Small!’ rule.<br><br>I think the function sticks to the **Do one thing** rule and does exactly what the naming suggests.  |
+| setActiveTokenToPrevious (7) | **Small!**: Too long according to Martin’s ‘Small!’ rule.<br><br>In contrast to setActiveTokenToNext, I feel that there is code in here that means that this does not apply to the **Do one thing** rule. I had trouble thou pulling the code that is needed to update the currentIndex out of this function without using at least 3 arguments. |
 | applyMaximalMunch (6) | **Small!**: Too long according to the ‘Small!’ rule. This however could be fixed by getting rid of the 2 lines used to create pretty strings to represent the tokens. Had I time, I would have overwritten the toString method of the Token class. |
-| getMatchingTokens (5) | **Small!**: Too long according to the ‘Small!’ rule. This was extracted from the getBestMatchingToken function and I am quite happy with it and feel it sticks to the **Do one thing** rule. I can't really see how to shorten it without making a super wide forEach statement on one line |
+| getMatchingTokens (5) | **Small!**: Too long according to the ‘Small!’ rule. <br><br>This was extracted from the getBestMatchingToken function and I am quite happy with it and feel it sticks to the **Do one thing** rule. I can't really see how to shorten it without making a super wide forEach statement on one line |
 | setPreviousTokenRules (5) | **Small!**: Too long according to Martin though I'm very happy with getting it down to 5 lines. I done so by extracting the code for the createPreviousTokenRule function from it. Reads much bettrer too. |
 
 ## Laboratory reflection
