@@ -44,7 +44,11 @@ const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 // const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 // const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
-console.log(tokenizer.activeToken)
+console.log(tokenizer.inputStrCurrentIndex)
+
+// tokenizer.setCurrentIndex(11)
+
+// console.log(tokenizer.getCurrentIndex())
 
 // tokenizer.setActiveTokenToNext()
 

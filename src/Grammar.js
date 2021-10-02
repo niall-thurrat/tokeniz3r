@@ -2,13 +2,24 @@ import Rule from './Rule.js'
 import GrammarValidationError from './exceptions/GrammarValidationError.js'
 
 export default class Grammar {
-  constructor (grammar) {
-    this.doValidation(grammar)
-    this.nextTokenRules = this.setNextTokenRules(grammar)
-    this.previousTokenRules = this.setPreviousTokenRules(grammar)
+  #nextTokenRules
+  #previousTokenRules
+
+  get nextTokenRules() {
+    return this.#nextTokenRules
   }
 
-  setNextTokenRules(grammar) {
+  get previousTokenRules() {
+    return this.#previousTokenRules
+  }
+
+  constructor (grammar) {
+    this.#doValidation(grammar)
+    this.#setNextTokenRules(grammar)
+    this.#setPreviousTokenRules(grammar)
+  }
+
+  #setNextTokenRules(grammar) {
     const rules = []
 
     grammar.forEach(rule => {
@@ -17,49 +28,49 @@ export default class Grammar {
     // END rule matches empty string
     rules.push(new Rule('END', new RegExp(/^\s*$/)))
 
-    return rules
+    this.#nextTokenRules = rules
   }
 
-  setPreviousTokenRules (grammar) {
-    const prevTokenRules = []
+  #setPreviousTokenRules (grammar) {
+    const rules = []
 
-    grammar.forEach(rule => {
-      const prevTokenRule = this.createPreviousTokenRule(rule)
-      prevTokenRules.push(prevTokenRule)
+    grammar.forEach(nextTokenRule => {
+      const rule = this.#createPreviousTokenRule(nextTokenRule)
+      rules.push(rule)
     })
-    return prevTokenRules
+    this.#previousTokenRules = rules
   }
 
-  createPreviousTokenRule(rule) {
+  #createPreviousTokenRule(nextTokenRule) {
     // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
-    const regexStr = rule.regex.toString()
+    const regexStr = nextTokenRule.regex.toString()
     const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
 
-    return new Rule(rule.tokenType, new RegExp(pattern, flags))
+    return new Rule(nextTokenRule.tokenType, new RegExp(pattern, flags))
   }
 
-  doValidation (grammar) {
-    this.validateIsArrayOfObjects(grammar) 
-    this.validateIsNotMissingAProperty(grammar)
-    this.validateIsNotFormattedWithAWrongType(grammar)
+  #doValidation (grammar) {
+    this.#validateIsArrayOfObjects(grammar) 
+    this.#validateIsNotMissingAProperty(grammar)
+    this.#validateIsNotFormattedWithAWrongType(grammar)
   }
 
-  validateIsArrayOfObjects(grammar) {
+  #validateIsArrayOfObjects(grammar) {
     grammar.forEach(rule => {
       if (Array.isArray(rule) || typeof rule !== 'object')
         throw new GrammarValidationError('Grammar argument is not an array of expected objects')
     })
   }
 
-  validateIsNotMissingAProperty(grammar) {
+  #validateIsNotMissingAProperty(grammar) {
     grammar.forEach(rule => {
       if ('tokenType' in rule === false || 'regex' in rule === false)
           throw new GrammarValidationError('Grammar rule found with missing property')
     })
   }
 
-  validateIsNotFormattedWithAWrongType(grammar) {
+  #validateIsNotFormattedWithAWrongType(grammar) {
    grammar.forEach(rule => {
       if (typeof rule.tokenType !== 'string' || rule.regex instanceof RegExp === false)
         throw new GrammarValidationError('Grammar rule property of wrong type used')

@@ -1,7 +1,18 @@
 export default class Token {
-   constructor (type, value) {
-    this.type = type
-    this.value = value
+  #type
+  #value
+
+  get type() {
+    return this.#type
+  }
+
+  get value() {
+    return this.#value
+  }
+  
+  constructor (type, value) {
+    this.#type = type
+    this.#value = value
   }
 }
 

@@ -107,8 +107,8 @@ List the individual test cases. One row per test case.
 | -------------------  | ---------------------------------------------|
 | setActiveTokenToNext (7) | **Small!**: This method is too long according to Martin’s ‘Small!’ rule.<br><br>I think the function sticks to the **Do one thing** rule and does exactly what the naming suggests.  |
 | setActiveTokenToPrevious (7) | **Small!**: Too long according to Martin’s ‘Small!’ rule.<br><br>In contrast to setActiveTokenToNext, I feel that there is code in here that means that this does not apply to the **Do one thing** rule. I had trouble thou pulling the code that is needed to update the currentIndex out of this function without using at least 3 arguments. |
-| applyMaximalMunch (6) | **Small!**: Too long according to the ‘Small!’ rule. This however could be fixed by getting rid of the 2 lines used to create pretty strings to represent the tokens. Had I time, I would have overwritten the toString method of the Token class. |
-| getMatchingTokens (5) | **Small!**: Too long according to the ‘Small!’ rule. <br><br>This was extracted from the getBestMatchingToken function and I am quite happy with it and feel it sticks to the **Do one thing** rule. I can't really see how to shorten it without making a super wide forEach statement on one line |
+| getMatchingTokens (6) | **Small!**: Too long according to the ‘Small!’ rule. <br><br>This was extracted from the getBestMatchingToken function and I am quite happy with it and feel it sticks to the **Do one thing** rule. I can't really see how to shorten it without making a super wide forEach statement on one line |
+| setNextTokenRules (5) |  |
 | setPreviousTokenRules (5) | **Small!**: Too long according to Martin though I'm very happy with getting it down to 5 lines. I done so by extracting the code for the createPreviousTokenRule function from it. Reads much bettrer too. |
 
 ## Laboratory reflection
