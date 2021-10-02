@@ -1,6 +1,6 @@
 import Tokenizer from './index.js'
 
-const inputStr = 'aaaaa bbbb ccc dd e'
+const inputStr = 'one two.'
 const WordAndDotGrammar = [
   {
     tokenType: 'WORD',
@@ -44,40 +44,23 @@ const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 // const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 // const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
-console.log(tokenizer.inputStrCurrentIndex)
+const token = tokenizer.activeToken
 
-// tokenizer.setCurrentIndex(11)
+console.log(`Token value: ${token.value}`)
+console.log(`Token type: ${token.type}`)
+console.log(`Prettify token: ${token.toString()}`)
+console.log(`Token starts at index ${tokenizer.inputStrCurrentIndex}`)
 
-// console.log(tokenizer.getCurrentIndex())
+tokenizer.setActiveTokenToNext()
+const token2 = tokenizer.activeToken
 
-// tokenizer.setActiveTokenToNext()
+console.log(`Prettify token2: ${token2.toString()}`)
+console.log(`Token2 starts at index ${tokenizer.inputStrCurrentIndex}`)
 
-// console.log(tokenizer.activeToken)
+const nextToken = tokenizer.getBestMatchingToken('str to match', false)
+const prevToken = tokenizer.getBestMatchingToken('str to match', true)
 
-// tokenizer.setActiveTokenToNext()
+console.log(nextToken.value)
+console.log(prevToken.value)
 
-// console.log(tokenizer.activeToken)
 
-// tokenizer.setActiveTokenToNext()
-
-// console.log(tokenizer.activeToken)
-
-// tokenizer.setActiveTokenToNext()
-
-// console.log(tokenizer.activeToken)
-
-// tokenizer.setActiveTokenToPrevious()
-
-// console.log(tokenizer.activeToken)
-
-// tokenizer.setActiveTokenToPrevious()
-
-// console.log(tokenizer.activeToken)
-
-// tokenizer.setActiveTokenToPrevious()
-
-// console.log(tokenizer.activeToken)
-
-// tokenizer.setActiveTokenToPrevious()
-
-// console.log(tokenizer.activeToken)
