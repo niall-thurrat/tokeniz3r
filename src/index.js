@@ -25,25 +25,21 @@ export default class Tokenizer {
   }
 
   setActiveTokenToNext() {
-    if (this.#activeToken.type === 'END') {
-      throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
-    } else {
-      const nextIndex = this.#getNextIndex()
-      const strAfterToken = this.#inputStr.slice(nextIndex)
-      this.#activeToken = this.getBestMatchingToken(strAfterToken, false)
-      this.#currentIndex = nextIndex
-    }
+    this.#throwExceptionIfSettingActiveTokenAfterEndToken()
+    const nextIndex = this.#getNextIndex()
+    const strAfterToken = this.#inputStr.slice(nextIndex)
+    this.#activeToken = this.getBestMatchingToken(strAfterToken, false)
+
+    this.#currentIndex = nextIndex
   }
 
   setActiveTokenToPrevious() {
-    if (this.#currentIndex === 0) {
-      throw new MethodCallError('setActiveTokenToPrevious should not be called when first token is active')
-    } else {
-      const strBeforeToken = this.#inputStr.slice(0, this.#currentIndex)
-      this.#activeToken = this.getBestMatchingToken(strBeforeToken, true)
-      const prevIndex = this.#getPreviousIndex(strBeforeToken, this.#activeToken.value.length)
-      this.#currentIndex = prevIndex
-    }
+    this.#throwExceptionIfSettingActiveTokenBeforeIndex0()
+    const strBeforeToken = this.#inputStr.slice(0, this.#currentIndex)
+    this.#activeToken = this.getBestMatchingToken(strBeforeToken, true)
+
+    const prevIndex = this.#getPreviousIndex(strBeforeToken, this.#activeToken.value.length)
+    this.#currentIndex = prevIndex
   }
 
   #getNextIndex() {
@@ -66,44 +62,52 @@ export default class Tokenizer {
     return this.#currentIndex - preceedingSpaceCount - prevTokenLength
   }
 
-  getBestMatchingToken(strToMatch, isForPrevious) {
-    const grammarRules = isForPrevious ? this.#grammar.previousTokenRules : this.#grammar.nextTokenRules
-    const matchingTokens = this.#getMatchingTokens(grammarRules, strToMatch)
-
-    this.#throwErrorIfNoMatchingToken(matchingTokens, strToMatch)
+  getBestMatchingToken(strToMatch, isPreviousToken) {
+    const rules = isPreviousToken ? this.#grammar.previousTokenRules : this.#grammar.nextTokenRules
+    const tokens = this.#getMatchingTokens(rules, strToMatch)
+    this.#throwExceptionIfNoMatchingToken(tokens, strToMatch)
     
-    return (matchingTokens.length > 1) ? this.#applyMaximalMunch(matchingTokens)[0] : matchingTokens[0]
+    return (tokens.length > 1) ? this.#getLongestMatch(tokens) : tokens[0]
   }
 
-  #getMatchingTokens(grammarRules, strToMatch) {
-    const matchingTokens = []
+  #getMatchingTokens(rules, strToMatch) {
+    const tokens = []
 
-    grammarRules.forEach(rule => {
-    const match = strToMatch.trim().match(rule.regex)
-      if (match !== null) {
-        matchingTokens.push(new Token(rule.tokenType, match[0].toString()))
-      }
+    rules.forEach(rule => {
+      const match = strToMatch.trim().match(rule.regex)
+      if (match !== null)
+        tokens.push(new Token(rule.tokenType, match[0].toString()))
     })
-
-    return matchingTokens
+    return tokens
   }
 
-  #throwErrorIfNoMatchingToken(matchingTokens, matchedStr) {
-    if (matchingTokens.length === 0) {
+  #getLongestMatch(tokens) {
+    tokens.sort((a, b) => b.value.length - a.value.length)
+    this.#throwExceptionIfNoLongestMatch(tokens)
+
+    return tokens[0]
+  }
+
+  #throwExceptionIfSettingActiveTokenAfterEndToken() {
+    if (this.#activeToken.type === 'END')
+      throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
+  }
+  #throwExceptionIfSettingActiveTokenBeforeIndex0() {
+    if (this.#currentIndex === 0)
+      throw new MethodCallError('setActiveTokenToPrevious should not be called when first token is active')
+  }
+
+  #throwExceptionIfNoMatchingToken(matchingTokens, matchedStr) {
+    if (matchingTokens.length === 0)
       throw new LexicalError(`No grammar rule matches string \'${this.#limitStrTo10Chars(matchedStr)}\'`)
-    }
   }
-
+  
   #limitStrTo10Chars(str) {
     return (str.length > 10) ? `${str.slice(0, 10)}...` : str
   }
 
-  #applyMaximalMunch(tokens) {
-    tokens.sort((a, b) => b.value.length - a.value.length)
-
-    if (tokens[0].value.length === tokens[1].value.length) {
-      throw new LexicalError(`Maximal munch cannot be applied to tokens \'${tokens[0].toString()}\' and \'${tokens[1].toString()}\'`)
-    }
-    return tokens
+  #throwExceptionIfNoLongestMatch(tokens) {
+    if (tokens[0].value.length === tokens[1].value.length)
+      throw new LexicalError(`Cannot get a longest match from tokens \'${tokens[0].toString()}\' and \'${tokens[1].toString()}\'`)
   }
 }

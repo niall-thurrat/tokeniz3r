@@ -20,25 +20,17 @@ export default class Grammar {
   }
 
   #setNextTokenRules(grammar) {
-    const rules = []
-
-    grammar.forEach(rule => {
-      rules.push(new Rule(rule.tokenType, rule.regex))
-    })
+    this.#nextTokenRules = grammar.map(rule =>
+      new Rule(rule.tokenType, rule.regex)
+    )
     // END rule matches empty string
-    rules.push(new Rule('END', new RegExp(/^\s*$/)))
-
-    this.#nextTokenRules = rules
+    this.#nextTokenRules.push(new Rule('END', new RegExp(/^\s*$/)))
   }
 
   #setPreviousTokenRules (grammar) {
-    const rules = []
-
-    grammar.forEach(nextTokenRule => {
-      const rule = this.#createPreviousTokenRule(nextTokenRule)
-      rules.push(rule)
-    })
-    this.#previousTokenRules = rules
+    this.#previousTokenRules = grammar.map(rule => 
+      this.#createPreviousTokenRule(rule)
+    )
   }
 
   #createPreviousTokenRule(nextTokenRule) {
