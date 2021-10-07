@@ -1,11 +1,10 @@
 {
   "name": "tokeniz3r",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A module that tokenizes strings",
   "type": "module",
   "main": "./src/index.js",
   "scripts": {
-    "try": "node ./src/test.js",
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
     "test": "mocha"
