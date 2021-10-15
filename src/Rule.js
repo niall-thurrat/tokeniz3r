@@ -6,12 +6,18 @@ export default class Rule {
     return this.#tokenType
   }
 
-  get regex() { // CHALLENGE - Consider making regex truly private by removing the getter and instead move responsibility into the Rule class.
-    return this.#regex
-  }
-
   constructor (tokenType, regex) {
     this.#tokenType = tokenType
     this.#regex = regex
+  }
+
+  getMatch(strToMatch) {
+    const match = strToMatch.trim().match(this.#regex)
+
+    return (match !== null) ? match[0].toString() : null
+  }
+
+  getRegexStr() {
+    return this.#regex.toString()
   }
 }

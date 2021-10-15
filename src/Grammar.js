@@ -10,7 +10,7 @@ export default class Grammar {
   constructor (grammar) {
     this.#doValidation(grammar)
     this.#setNextTokenRules(grammar)
-    this.#setPreviousTokenRules(grammar)
+    this.#setPreviousTokenRules(this.#nextTokenRules)
   }
 
   getBestMatchingToken(strToMatch, isPreviousToken) {
@@ -25,9 +25,9 @@ export default class Grammar {
     const tokens = []
 
     rules.forEach(rule => {
-      const match = strToMatch.trim().match(rule.regex) // TODO: move this functionality to Rule object
-      if (match !== null)
-        tokens.push(new Token(rule.tokenType, match[0].toString()))
+      const matchValue = rule.getMatch(strToMatch)
+      if (matchValue !== null)
+        tokens.push(new Token(rule.tokenType, matchValue))
     })
     return tokens
   }
@@ -53,15 +53,15 @@ export default class Grammar {
     this.#nextTokenRules.push(new Rule('END', new RegExp(/^\s*$/)))
   }
 
-  #setPreviousTokenRules (grammar) {
-    this.#previousTokenRules = grammar.map(rule => 
+  #setPreviousTokenRules(nextTokenRules) {
+    this.#previousTokenRules = nextTokenRules.map(rule => 
       this.#createPreviousTokenRule(rule)
     )
   }
 
   #createPreviousTokenRule(nextTokenRule) {
     // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
-    const regexStr = nextTokenRule.regex.toString() // remove rule.regex getter - move this into rule?
+    const regexStr = nextTokenRule.getRegexStr()
     const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
 
@@ -96,7 +96,7 @@ export default class Grammar {
     })
   }
 
-  #throwExceptionIfFormattedWithAWrongType(grammar) { // remove rule.regex getter - move this into rule?
+  #throwExceptionIfFormattedWithAWrongType(grammar) {
    grammar.forEach(rule => {
       if (typeof rule.tokenType !== 'string' || rule.regex instanceof RegExp === false)
         throw new GrammarValidationError('Grammar rule property of wrong type used')
