@@ -27,13 +27,13 @@ export default class Grammar {
     rules.forEach(rule => {
       const matchValue = rule.getMatch(strToMatch)
       if (matchValue !== null)
-        tokens.push(new Token(rule.tokenType, matchValue))
+        tokens.push(new Token(rule.getTokenType(), matchValue))
     })
     return tokens
   }
 
   #getLongestMatch(tokens) {
-    tokens.sort((a, b) => b.value.length - a.value.length)
+    tokens.sort((a, b) => b.getValue().length - a.getValue().length)
     this.#throwExceptionIfNoLongestMatch(tokens)
 
     return tokens[0]
@@ -65,7 +65,7 @@ export default class Grammar {
     const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
 
-    return new Rule(nextTokenRule.tokenType, new RegExp(pattern, flags))
+    return new Rule(nextTokenRule.getTokenType(), new RegExp(pattern, flags))
   }
 
   #throwExceptionIfNoMatchingToken(matchingTokens, matchedStr) {
@@ -78,7 +78,7 @@ export default class Grammar {
   }
 
   #throwExceptionIfNoLongestMatch(tokens) {
-    if (tokens[0].value.length === tokens[1].value.length)
+    if (tokens[0].getValue().length === tokens[1].getValue().length)
       throw new LexicalError(`Cannot get a longest match from tokens \'${tokens[0].toString()}\' and \'${tokens[1].toString()}\'`)
   }
 

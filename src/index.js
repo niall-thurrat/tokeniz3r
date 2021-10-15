@@ -7,19 +7,19 @@ export default class Tokenizer {
   #currentIndex
   #activeToken
 
-  get inputStrCurrentIndex() {
-    return this.#currentIndex
-  }
-
-  get activeToken () {
-    return this.#activeToken // not a high abstraction level - make a function instead
-  }
-
   constructor (inputStr, grammar) {
     this.#inputStr = inputStr.trim()
     this.#grammar = new Grammar(grammar)
     this.#currentIndex = 0
     this.#activeToken = this.#grammar.getBestMatchingToken(this.#inputStr, false)
+  }
+
+  getInputStrCurrentIndex() {
+    return this.#currentIndex
+  }
+
+  getActiveToken() {
+    return this.#activeToken
   }
 
   setActiveTokenToNext() {
@@ -36,19 +36,19 @@ export default class Tokenizer {
     const strBeforeToken = this.#inputStr.slice(0, this.#currentIndex)
     this.#activeToken = this.#grammar.getBestMatchingToken(strBeforeToken, true)
 
-    const prevIndex = this.#getPreviousIndex(strBeforeToken, this.#activeToken.value.length)
+    const prevIndex = this.#getPreviousIndex(strBeforeToken, this.#activeToken.getValue().length)
     this.#currentIndex = prevIndex
   }
 
   #getNextIndex() {
-    const activeTokenLength = this.#activeToken.value.length
+    const tokenLength = this.#activeToken.getValue().length
     const spaceCount = this.#countSpacesAfterActiveToken()
 
-    return this.#currentIndex + activeTokenLength + spaceCount
+    return this.#currentIndex + tokenLength + spaceCount
   }
 
   #countSpacesAfterActiveToken() {
-    const newIndex = this.#currentIndex + this.#activeToken.value.length
+    const newIndex = this.#currentIndex + this.#activeToken.getValue().length
     const strAfterToken = this.#inputStr.slice(newIndex)
 
     return strAfterToken.indexOf(strAfterToken.trim())
@@ -61,10 +61,10 @@ export default class Tokenizer {
   }
 
   #throwExceptionIfSettingActiveTokenAfterEndToken() {
-    if (this.#activeToken.type === 'END')
+    if (this.#activeToken.getType() === 'END')
       throw new MethodCallError('setActiveTokenToNext should not be called when END token is active')
   }
-  
+
   #throwExceptionIfSettingActiveTokenBeforeIndex0() {
     if (this.#currentIndex === 0)
       throw new MethodCallError('setActiveTokenToPrevious should not be called when first token is active')

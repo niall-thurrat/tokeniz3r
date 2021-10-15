@@ -2,13 +2,13 @@ export default class Rule {
   #tokenType
   #regex
 
-  get tokenType() {
-    return this.#tokenType
-  }
-
   constructor (tokenType, regex) {
     this.#tokenType = tokenType
     this.#regex = regex
+  }
+
+  getTokenType() {
+    return this.#tokenType
   }
 
   getMatch(strToMatch) {
