@@ -6,7 +6,7 @@ export default class Rule {
     return this.#tokenType
   }
 
-  get regex() {
+  get regex() { // CHALLENGE - Consider making regex truly private by removing the getter and instead move responsibility into the Rule class.
     return this.#regex
   }
 

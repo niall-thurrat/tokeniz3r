@@ -1,22 +1,48 @@
 import Rule from './Rule.js'
+import Token from './Token.js'
 import GrammarValidationError from './exceptions/GrammarValidationError.js'
+import LexicalError from './exceptions/LexicalError.js'
 
 export default class Grammar {
   #nextTokenRules
   #previousTokenRules
 
-  get nextTokenRules() {
-    return this.#nextTokenRules
-  }
-
-  get previousTokenRules() {
-    return this.#previousTokenRules
-  }
-
   constructor (grammar) {
     this.#doValidation(grammar)
     this.#setNextTokenRules(grammar)
     this.#setPreviousTokenRules(grammar)
+  }
+
+  getBestMatchingToken(strToMatch, isPreviousToken) {
+    const rules = isPreviousToken ? this.#previousTokenRules : this.#nextTokenRules
+    const tokens = this.#getMatchingTokens(rules, strToMatch)
+    this.#throwExceptionIfNoMatchingToken(tokens, strToMatch)
+    
+    return (tokens.length > 1) ? this.#getLongestMatch(tokens) : tokens[0]
+  }
+
+  #getMatchingTokens(rules, strToMatch) {
+    const tokens = []
+
+    rules.forEach(rule => {
+      const match = strToMatch.trim().match(rule.regex) // TODO: move this functionality to Rule object
+      if (match !== null)
+        tokens.push(new Token(rule.tokenType, match[0].toString()))
+    })
+    return tokens
+  }
+
+  #getLongestMatch(tokens) {
+    tokens.sort((a, b) => b.value.length - a.value.length)
+    this.#throwExceptionIfNoLongestMatch(tokens)
+
+    return tokens[0]
+  }
+
+  #doValidation (grammar) {
+    this.#throwExceptionIfNotArrayOfObjects(grammar) 
+    this.#throwExceptionIfMissingAProperty(grammar)
+    this.#throwExceptionIfFormattedWithAWrongType(grammar)
   }
 
   #setNextTokenRules(grammar) {
@@ -35,34 +61,42 @@ export default class Grammar {
 
   #createPreviousTokenRule(nextTokenRule) {
     // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
-    const regexStr = nextTokenRule.regex.toString()
+    const regexStr = nextTokenRule.regex.toString() // remove rule.regex getter - move this into rule?
     const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
 
     return new Rule(nextTokenRule.tokenType, new RegExp(pattern, flags))
   }
 
-  #doValidation (grammar) {
-    this.#validateIsArrayOfObjects(grammar) 
-    this.#validateIsNotMissingAProperty(grammar)
-    this.#validateIsNotFormattedWithAWrongType(grammar)
+  #throwExceptionIfNoMatchingToken(matchingTokens, matchedStr) {
+    if (matchingTokens.length === 0)
+      throw new LexicalError(`No grammar rule matches string \'${this.#limitStrTo10Chars(matchedStr)}\'`)
+  }
+  
+  #limitStrTo10Chars(str) {
+    return (str.length > 10) ? `${str.slice(0, 10)}...` : str
   }
 
-  #validateIsArrayOfObjects(grammar) {
+  #throwExceptionIfNoLongestMatch(tokens) {
+    if (tokens[0].value.length === tokens[1].value.length)
+      throw new LexicalError(`Cannot get a longest match from tokens \'${tokens[0].toString()}\' and \'${tokens[1].toString()}\'`)
+  }
+
+  #throwExceptionIfNotArrayOfObjects(grammar) {
     grammar.forEach(rule => {
       if (Array.isArray(rule) || typeof rule !== 'object')
         throw new GrammarValidationError('Grammar argument is not an array of expected objects')
     })
   }
 
-  #validateIsNotMissingAProperty(grammar) {
+  #throwExceptionIfMissingAProperty(grammar) {
     grammar.forEach(rule => {
       if ('tokenType' in rule === false || 'regex' in rule === false)
           throw new GrammarValidationError('Grammar rule found with missing property')
     })
   }
 
-  #validateIsNotFormattedWithAWrongType(grammar) {
+  #throwExceptionIfFormattedWithAWrongType(grammar) { // remove rule.regex getter - move this into rule?
    grammar.forEach(rule => {
       if (typeof rule.tokenType !== 'string' || rule.regex instanceof RegExp === false)
         throw new GrammarValidationError('Grammar rule property of wrong type used')
