@@ -14,7 +14,7 @@ export default class Rule {
   getMatch(strToMatch) {
     const match = strToMatch.trim().match(this.#regex)
 
-    return (match !== null) ? match[0].toString() : null
+    return (match !== null) ? match[0].toString() : match
   }
 
   getRegexStr() {
