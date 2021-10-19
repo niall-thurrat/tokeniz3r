@@ -1,20 +1,18 @@
-import Rule from './Rule.js'
+import Rules from './Rules.js'
 import Token from './Token.js'
 import GrammarValidationError from './exceptions/GrammarValidationError.js'
 import LexicalError from './exceptions/LexicalError.js'
 
 export default class Grammar {
-  #nextTokenRules
-  #previousTokenRules
+  #rules
 
   constructor (grammar) {
     this.#doValidation(grammar)
-    this.#setNextTokenRules(grammar)
-    this.#setPreviousTokenRules(this.#nextTokenRules)
+    this.#rules = new Rules(grammar)
   }
 
   getBestMatchingToken(strToMatch, isPreviousToken) {
-    const rules = isPreviousToken ? this.#previousTokenRules : this.#nextTokenRules
+    const rules = isPreviousToken ? this.#rules.getPreviousTokenRules() : this.#rules.getNextTokenRules()
     const tokens = this.#getMatchingTokens(rules, strToMatch)
     this.#throwExceptionIfNoMatchingToken(tokens, strToMatch)
     
@@ -43,29 +41,6 @@ export default class Grammar {
     this.#throwExceptionIfNotArrayOfObjects(grammar) 
     this.#throwExceptionIfMissingAProperty(grammar)
     this.#throwExceptionIfFormattedWithAWrongType(grammar)
-  }
-
-  #setNextTokenRules(grammar) {
-    this.#nextTokenRules = grammar.map(rule =>
-      new Rule(rule.tokenType, rule.regex)
-    )
-    // END rule matches empty string
-    this.#nextTokenRules.push(new Rule('END', new RegExp(/^\s*$/)))
-  }
-
-  #setPreviousTokenRules(nextTokenRules) {
-    this.#previousTokenRules = nextTokenRules.map(rule => 
-      this.#createPreviousTokenRule(rule)
-    )
-  }
-
-  #createPreviousTokenRule(nextTokenRule) {
-    // Transform regex. Example: '/^[\\w|åäöÅÄÖ]+/i' becomes pattern '[\\w|åäöÅÄÖ]+$' and flags 'i'
-    const regexStr = nextTokenRule.getRegexStr()
-    const pattern = regexStr.substring(1, regexStr.lastIndexOf('/')).replace(/\^/, '') + '$'
-    const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1, regexStr.length)
-
-    return new Rule(nextTokenRule.getTokenType(), new RegExp(pattern, flags))
   }
 
   #throwExceptionIfNoMatchingToken(matchingTokens, matchedStr) {

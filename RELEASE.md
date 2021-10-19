@@ -36,10 +36,11 @@ Describe how you adapted your code and instructions for another programmer to us
 ## Description of my code
 Describe your code at a high level of abstraction. A brief description of your most important classes and methods. Feel free to create a class diagram as an image.
 
-My module consists of 4 classes:
+My module consists of 5 classes:
 
-- **Tokenizer**: this is the class that is exported through the index.js file. It's public methods and (pseudo) properties constitute the module's public interface. The most important public property is activeToken, while the 2 most important public methods are setActiveTokenToNext and setActiveTokenToPrevious.
-- **Grammar**: the *grammar* argument used when instanciating a Tokenizer object is used by the Tokenizer constructer to create an instance of the Grammar class. This has 2 properties that are arrays of differing grammar Rule objects: nextTokenRules and previousTokenRules.
+- **Tokenizer**: this is the class that is exported through the index.js file. It's public methods constitute the module's public interface: getActiveToken, setActiveTokenToNext and setActiveTokenToPrevious.
+- **Grammar**: the *grammar* argument used when instanciating a Tokenizer object is used by the Tokenizer constructer to create an instance of the Grammar class. This has one public method which means the class can assess what the best next or previous match is in the input string.
+- **Rules**: generates 2 arrays of Rule instances using the grammar argument: one for next token rules and one for previous token rules.
 - **Rule**: rules are used to check if matching tokens can be identified in strings.
 - **Token**: instances are created by the app to represent best matches and can be got by users accessing the activeToken property, or set using the setActiveTokenToNext and setActiveTokenToPrevious methods on the Tokenizer class.
 
