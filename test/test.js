@@ -24,8 +24,8 @@ describe('WordAndDotGrammar', () => {
     }
   ]
 
-  describe('TC1_GetWordToken_Sequence[]', () => {
-    it('should be WORD("a")', () => {
+  describe('TC1_GetWordToken_Sequence[] (Indata: \'a\')', () => {
+    it('Expected outcome: WORD("a")', () => {
       const inputStr = 'a'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -35,8 +35,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC2_GetWordToken_Sequence[>]', () => {
-    it('should be WORD("aa")', () => {
+  describe('TC2_GetWordToken_Sequence[>] (Indata: \'a aa\')', () => {
+    it('Expected outcome: WORD("aa")', () => {
       const inputStr = 'a aa'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -47,8 +47,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC3_GetDotToken_Sequence[>]', () => {
-    it('should be DOT(".")', () => {
+  describe('TC3_GetDotToken_Sequence[>] (Indata: \'a.b\')', () => {
+    it('Expected outcome: DOT(".")', () => {
       const inputStr = 'a.b'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -59,8 +59,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC4_GetWordToken_Sequence[>>]', () => {
-    it('should be WORD("b")', () => {
+  describe('TC4_GetWordToken_Sequence[>>] (Indata: \'a.b\')', () => {
+    it('Expected outcome: WORD("b")', () => {
       const inputStr = 'a.b'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -72,8 +72,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC5_GetWordToken_Sequence[>>]', () => {
-    it('should be WORD("b")', () => {
+  describe('TC5_GetWordToken_Sequence[>>] (Indata: \'aa. b\')', () => {
+    it('Expected outcome: WORD("b")', () => {
       const inputStr = 'aa. b'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -85,8 +85,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC6_GetDotToken_Sequence[>><]', () => {
-    it('should be DOT(".")', () => {
+  describe('TC6_GetDotToken_Sequence[>><] (Indata: \'a .b\')', () => {
+    it('Expected outcome: DOT(".")', () => {
       const inputStr = 'a .b'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -99,8 +99,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC7_GetEndToken_Sequence[]', () => {
-    it('should be END', () => {
+  describe('TC7_GetEndToken_Sequence[] (Indata: \'\')', () => {
+    it('Expected outcome: END token', () => {
       const inputStr = ''
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -110,8 +110,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC8_GetEndToken_Sequence[]', () => {
-    it('should be END', () => {
+  describe('TC8_GetEndToken_Sequence[] (Indata: \' \')', () => {
+    it('Expected outcome: END token', () => {
       const inputStr = ' '
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -121,8 +121,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC9_GetEndToken_Sequence[>]', () => {
-    it('should be END', () => {
+  describe('TC9_GetEndToken_Sequence[>] (Indata: \'a\')', () => {
+    it('Expected outcome: END token', () => {
       const inputStr = 'a'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -133,8 +133,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC10_GetException_Sequence[<]', () => {
-    it('should be MethodCallError', () => {
+  describe('TC10_GetException_Sequence[<] (Indata: \'a\')', () => {
+    it('Expected outcome: MethodCallError', () => {
       const inputStr = 'a'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -142,8 +142,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC11_GetException_Sequence[]', () => {
-    it('should be LexicalError', () => {
+  describe('TC11_GetException_Sequence[] (Indata: \'!\')', () => {
+    it('Expected outcome: LexicalError', () => {
       const inputStr = '!'
 
       expect(() => new Tokenizer(inputStr, WordAndDotGrammar)).to.throw(LexicalError)
@@ -183,8 +183,8 @@ describe('ArithmeticGrammar', () => {
     }
   ]
 
-  describe('TC12_GetNumberToken_Sequence[]', () => {
-    it('should be NUMBER("3")', () => {
+  describe('TC12_GetNumberToken_Sequence[] (Indata: \'3\')', () => {
+    it('Expected outcome: NUMBER("3")', () => {
       const inputStr = '3'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
@@ -194,8 +194,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC13_GetNumberToken_Sequence[]', () => {
-    it('should be NUMBER("3.14")', () => {
+  describe('TC13_GetNumberToken_Sequence[] (Indata: \'3.14\')', () => {
+    it('Expected outcome: NUMBER("3.14")', () => {
       const inputStr = '3.14'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
@@ -205,8 +205,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC14_GetMulToken_Sequence[>>>]', () => {
-    it('should be MUL("*")', () => {
+  describe('TC14_GetMulToken_Sequence[>>>] (Indata: \'3 + 54 * 4\')', () => {
+    it('Expected outcome: MUL("*")', () => {
       const inputStr = '3 + 54 * 4'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -218,8 +218,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC15_GetException_Sequence[>>>]', () => {
-    it('should be LexicalError', () => {
+  describe('TC15_GetException_Sequence[>>>] (Indata: \'3+5 # 4\')', () => {
+    it('Expected outcome: LexicalError', () => {
       const inputStr = '3+5 # 4'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -230,8 +230,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC16_GetAddToken_Sequence[><>>>]', () => {
-    it('should be ADD("+")', () => {
+  describe('TC16_GetAddToken_Sequence[><>>>] (Indata: \'3.0+54.1     + 4.2\')', () => {
+    it('Expected outcome: ADD("+")', () => {
       const inputStr = '3.0+54.1     + 4.2'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -244,8 +244,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC17_GetLeftParenthesisToken_Sequence[>>]', () => {
-    it('should be LEFT_PARENTHESIS("(")', () => {
+  describe('TC17_GetLeftParenthesisToken_Sequence[>>] (Indata: \'3.0 + (5 * 4)\')', () => {
+    it('Expected outcome: LEFT_PARENTHESIS("(")', () => {
       const inputStr = '3.0 + (5 * 4)'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -257,8 +257,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC18_GetRightParenthesisToken_Sequence[>>>>]', () => {
-    it('should be RIGHT_PARENTHESIS(")")', () => {
+  describe('TC18_GetRightParenthesisToken_Sequence[>>>>] (Indata: \'(5 * 4) / 2\')', () => {
+    it('Expected outcome: RIGHT_PARENTHESIS(")")', () => {
       const inputStr = '(5 * 4) / 2'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
       const setNext = () => tokenizer.setActiveTokenToNext()
@@ -270,8 +270,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC19_GetDivisionToken_Sequence[>]', () => {
-    it('should be DIV("/")', () => {
+  describe('TC19_GetDivisionToken_Sequence[>] (Indata: \'a\') (Indata: \'2 / 2\')', () => {
+    it('Expected outcome: DIV("/")', () => {
       const inputStr = '2 / 2'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
@@ -282,8 +282,8 @@ describe('ArithmeticGrammar', () => {
     })
   })
 
-  describe('TC20_GetSubtractionToken_Sequence[>]', () => {
-    it('should be SUBTRACT("-")', () => {
+  describe('TC20_GetSubtractionToken_Sequence[>] (Indata: \'7-4\')', () => {
+    it('Expected outcome: SUBTRACT("-")', () => {
       const inputStr = '7-4'
       const tokenizer = new Tokenizer(inputStr, ArithmeticGrammar)
 
@@ -318,8 +318,8 @@ describe('MaximalMunchGrammar', () => {
     }
   ]
 
-  describe('TC21_GetFloatTokenUsingMaxMunch_Sequence[]', () => {
-    it('should be FLOAT("3.14")', () => {
+  describe('TC21_GetFloatTokenUsingMaxMunch_Sequence[] (Indata: \'3.14\')', () => {
+    it('Expected outcome: FLOAT("3.14")', () => {
       const inputStr = '3.14'
       const tokenizer = new Tokenizer(inputStr, MaximalMunchGrammar)
 
@@ -329,8 +329,8 @@ describe('MaximalMunchGrammar', () => {
     })
   })
 
-  describe('TC22_GetExceptionForSameLengthMatchingTokens_Sequence[]', () => {
-    it('should be LexicalError', () => {
+  describe('TC22_GetExceptionForSameLengthMatchingTokens_Sequence[] (Indata: \'3.14\')', () => {
+    it('Expected outcome: LexicalError', () => {
       const inputStr = '3.14'
 
       expect(() => new Tokenizer(inputStr, FailingMaximalMunchGrammar)).to.throw(LexicalError)
@@ -350,8 +350,8 @@ describe('WordAndDotGrammar', () => {
     }
   ]
 
-  describe('TC23_EdgeCase_GetLastTokenFromInputStrWithNoTrailingSpace_Sequence[]', () => {
-    it('should be WORD("a")', () => {
+  describe('TC23_EdgeCase_GetLastTokenFromInputStrWithRemovedTrailingSpace_Sequence[] (Indata: \'a \')', () => {
+    it('Expected outcome: WORD("a")', () => {
       const inputStr = 'a '
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -361,8 +361,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC24_EdgeCase_GetEndTokenWhenInputStrHasTrailingSpace_Sequence[>]', () => {
-    it('should be END', () => {
+  describe('TC24_EdgeCase_GetEndTokenWhenInputStrHasTrailingSpace_Sequence[>] (Indata: \'a \')', () => {
+    it('Expected outcome: END token', () => {
       const inputStr = 'a '
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
@@ -373,8 +373,8 @@ describe('WordAndDotGrammar', () => {
     })
   })
 
-  describe('TC25_EdgeCase_GetFirstTokenThatDoesNotContainLeadingSpace_Sequence[]', () => {
-    it('should be WORD("a")', () => {
+  describe('TC25_EdgeCase_GetFirstTokenThatDoesNotContainLeadingSpace_Sequence[] (Indata: \' a\')', () => {
+    it('Expected outcome: WORD("a")', () => {
       const inputStr = ' a'
       const tokenizer = new Tokenizer(inputStr, WordAndDotGrammar)
 
